@@ -1,12 +1,21 @@
-﻿document.addEventListener("DOMContentLoaded", () => {
-    const container = document.getElementById("post-list");
-    posts.forEach(p => {
-        const div = document.createElement("div");
-        div.classList.add("post");
-        div.innerHTML = `
-      <h2><a href="${p.link}">${p.title}</a></h2>
-      <p><small>${p.date} | Chủ đề: ${p.tag}</small></p>
-    `;
-        container.appendChild(div);
-    });
-});
+﻿// Lấy phần tử chính
+const postList = document.getElementById("post-list");
+
+// Render danh sách bài viết
+function renderPosts() {
+  postList.innerHTML = posts
+    .map(
+      (post) => `
+        <article class="post-card">
+          <h2><a href="${post.link}">${post.title}</a></h2>
+          <p class="date">📅 ${post.date}</p>
+          <p>${post.desc}</p>
+          <a href="${post.link}" class="read-more">Đọc bài →</a>
+        </article>
+      `
+    )
+    .join("");
+}
+
+// Gọi hàm khi trang tải
+renderPosts();
