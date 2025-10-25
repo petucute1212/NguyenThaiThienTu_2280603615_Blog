@@ -39,3 +39,14 @@ footer {
     background: #eee;
     margin-top: 2rem;
 }
+
+pre {
+    background-color: #f5f5f5;
+    border-left: 4px solid #4caf50;
+    padding: 10px;
+    overflow-x: auto;
+}
+code {
+    font-family: Consolas, monospace;
+    color: #333;
+}

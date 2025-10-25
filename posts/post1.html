@@ -12,7 +12,102 @@
     </header>
     <main>
         <p><b>Ngày đăng:</b> 19/10/2025</p>
-        <p>Lập trình mạng trong Java là nền tảng giúp xây dựng các ứng dụng client-server, chat, truyền file, và dịch vụ web...</p>
+
+        <section>
+            <h2>1. Mở đầu</h2>
+            <p>
+                Trong thời đại mà mọi hệ thống đều kết nối Internet, lập trình mạng trở thành kỹ năng quan trọng với mọi lập trình viên. 
+                Với Java, bạn có thể dễ dàng xây dựng các ứng dụng trao đổi dữ liệu qua mạng như hệ thống chat, game online, dịch vụ web hay công cụ chia sẻ tệp tin.
+            </p>
+            <p>
+                Ưu điểm của Java nằm ở mô hình lập trình đa nền tảng và thư viện mạng mạnh mẽ có sẵn, giúp bạn tập trung vào logic mà không cần lo về chi tiết hệ điều hành.
+            </p>
+        </section>
+
+        <section>
+            <h2>2. Lập trình mạng trong Java là gì?</h2>
+            <p>
+                Lập trình mạng trong Java dựa trên khái niệm <b>Socket</b> — một điểm cuối (endpoint) của kết nối giữa hai máy. 
+                Khi một ứng dụng gửi dữ liệu đi, nó sẽ “mở” một socket để kết nối với socket của bên nhận. 
+                Java hỗ trợ cả giao thức TCP (đảm bảo dữ liệu toàn vẹn) và UDP (nhanh, không đảm bảo).
+            </p>
+            <ul>
+                <li><b>ServerSocket</b>: dùng để tạo máy chủ, lắng nghe yêu cầu kết nối từ client.</li>
+                <li><b>Socket</b>: dùng ở phía client để kết nối tới server.</li>
+                <li><b>InputStream / OutputStream</b>: luồng dữ liệu để đọc và ghi qua mạng.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>3. Ví dụ minh họa</h2>
+            <p>Dưới đây là ví dụ đơn giản về việc tạo server và client trong Java:</p>
+            <pre><code>
+// Server.java
+import java.io.*;
+import java.net.*;
+
+public class Server {
+    public static void main(String[] args) throws IOException {
+        ServerSocket server = new ServerSocket(9999);
+        System.out.println("Server đang chạy...");
+        Socket socket = server.accept();
+
+        BufferedReader input = new BufferedReader(
+            new InputStreamReader(socket.getInputStream())
+        );
+        PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
+
+        String message = input.readLine();
+        System.out.println("Client gửi: " + message);
+        output.println("Server nhận được: " + message);
+
+        socket.close();
+        server.close();
+    }
+}
+            </code></pre>
+
+            <pre><code>
+// Client.java
+import java.io.*;
+import java.net.*;
+
+public class Client {
+    public static void main(String[] args) throws IOException {
+        Socket socket = new Socket("localhost", 9999);
+        BufferedReader input = new BufferedReader(
+            new InputStreamReader(System.in)
+        );
+        PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
+        BufferedReader response = new BufferedReader(
+            new InputStreamReader(socket.getInputStream())
+        );
+
+        System.out.print("Nhập tin nhắn gửi đến server: ");
+        String msg = input.readLine();
+        output.println(msg);
+        System.out.println(response.readLine());
+
+        socket.close();
+    }
+}
+            </code></pre>
+            <p>
+                Khi chạy chương trình, server sẽ chờ client kết nối, nhận chuỗi dữ liệu, và phản hồi lại. 
+                Đây chính là nguyên lý nền tảng của mọi ứng dụng client-server.
+            </p>
+        </section>
+
+        <section>
+            <h2>4. Kết luận</h2>
+            <p>
+                Bài viết này giới thiệu những khái niệm nền tảng về lập trình mạng trong Java: socket, server, client và cơ chế truyền dữ liệu. 
+                Ở các bài tiếp theo, chúng ta sẽ đi sâu hơn vào <b>đa luồng trong server</b>, <b>giao tiếp nhiều client</b> và <b>xây dựng ứng dụng web thực tế</b>.
+            </p>
+        </section>
     </main>
+    <footer>
+        <p><i>© 2025 - Blog Lập Trình Mạng với Java</i></p>
+    </footer>
 </body>
 </html>
