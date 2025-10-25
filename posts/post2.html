@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <title>Hiểu rõ hơn về Socket và giao thức TCP/UDP trong Java</title>
+    <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+    <header>
+        <h1>Hiểu rõ hơn về Socket và giao thức TCP/UDP trong Java</h1>
+        <nav><a href="../index.html">← Trở về trang chủ</a></nav>
+    </header>
+    <main>
+        <p><b>Ngày đăng:</b> 20/10/2025</p>
+
+        <section>
+            <h2>1. Socket là gì?</h2>
+            <p>
+                <b>Socket</b> là giao diện phần mềm cho phép hai chương trình — thường là trên hai máy tính khác nhau — 
+                trao đổi dữ liệu qua mạng. Trong Java, socket đóng vai trò như “đường ống” kết nối giữa <b>Client</b> và <b>Server</b>.
+            </p>
+            <p>
+                Một socket được định danh bởi hai yếu tố:
+                <ul>
+                    <li>Địa chỉ IP của máy.</li>
+                    <li>Số hiệu cổng (Port number).</li>
+                </ul>
+                Ví dụ: <code>192.168.1.5:8080</code> là một socket hoàn chỉnh.
+            </p>
+        </section>
+
+        <section>
+            <h2>2. Giao thức TCP và UDP</h2>
+            <p>
+                Hai giao thức phổ biến nhất mà socket Java hỗ trợ là <b>TCP</b> và <b>UDP</b>.  
+                Mỗi loại có đặc trưng và mục đích khác nhau:
+            </p>
+            <table border="1" cellpadding="8" cellspacing="0">
+                <tr>
+                    <th>Đặc điểm</th>
+                    <th>TCP (Transmission Control Protocol)</th>
+                    <th>UDP (User Datagram Protocol)</th>
+                </tr>
+                <tr>
+                    <td>Độ tin cậy</td>
+                    <td>Cao – đảm bảo gói tin đến nơi, đúng thứ tự</td>
+                    <td>Thấp – không đảm bảo gói tin đến</td>
+                </tr>
+                <tr>
+                    <td>Tốc độ</td>
+                    <td>Chậm hơn do cần xác nhận, kiểm tra lỗi</td>
+                    <td>Nhanh hơn do không có xác nhận</td>
+                </tr>
+                <tr>
+                    <td>Ứng dụng phù hợp</td>
+                    <td>Web, email, chat, truyền file</td>
+                    <td>Game online, video streaming, IoT</td>
+                </tr>
+            </table>
+            <p>
+                Khi lập trình Java, bạn chọn giao thức tùy theo tính chất ứng dụng: cần tin cậy hay cần tốc độ.
+            </p>
+        </section>
+
+        <section>
+            <h2>3. Socket trong Java hoạt động thế nào?</h2>
+            <p>
+                Java cung cấp hai lớp chính để làm việc với Socket:
+            </p>
+            <ul>
+                <li><b>ServerSocket</b>: tạo ra một “cổng” để lắng nghe yêu cầu từ client (TCP).</li>
+                <li><b>Socket</b>: dùng để kết nối và trao đổi dữ liệu với server (TCP).</li>
+            </ul>
+            <p>
+                Với UDP, Java cung cấp hai lớp khác:
+            </p>
+            <ul>
+                <li><b>DatagramSocket</b>: để gửi và nhận gói dữ liệu (datagram).</li>
+                <li><b>DatagramPacket</b>: đại diện cho một gói tin UDP cụ thể.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>4. Ví dụ minh họa TCP và UDP</h2>
+
+            <h3>4.1. TCP – Kết nối ổn định</h3>
+            <pre><code>
+// TCPServer.java
+import java.io.*;
+import java.net.*;
+
+public class TCPServer {
+    public static void main(String[] args) throws IOException {
+        ServerSocket server = new ServerSocket(8888);
+        System.out.println("Server đang chờ kết nối...");
+
+        Socket socket = server.accept();
+        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+
+        String message = in.readLine();
+        System.out.println("Client gửi: " + message);
+        out.println("Đã nhận được: " + message);
+
+        socket.close();
+        server.close();
+    }
+}
+            </code></pre>
+
+            <h3>4.2. UDP – Gửi gói dữ liệu nhanh</h3>
+            <pre><code>
+// UDPServer.java
+import java.net.*;
+
+public class UDPServer {
+    public static void main(String[] args) throws Exception {
+        DatagramSocket socket = new DatagramSocket(9999);
+        byte[] buffer = new byte[1024];
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+        socket.receive(packet);
+        String msg = new String(packet.getData(), 0, packet.getLength());
+        System.out.println("Nhận từ client: " + msg);
+        socket.close();
+    }
+}
+            </code></pre>
+            <p>
+                UDP không yêu cầu kết nối lâu dài. Nó chỉ gửi từng gói dữ liệu, nên nhanh nhưng có thể mất mát gói tin nếu mạng yếu.
+            </p>
+        </section>
+
+        <section>
+            <h2>5. Tổng kết</h2>
+            <p>
+                Socket là cầu nối giữa hai chương trình trong mạng.  
+                <b>TCP</b> phù hợp với ứng dụng cần độ tin cậy, trong khi <b>UDP</b> lý tưởng cho ứng dụng yêu cầu tốc độ.  
+                Hiểu rõ hai giao thức này là bước đầu tiên để xây dựng ứng dụng mạng hiệu quả trong Java.
+            </p>
+            <p>
+                Ở bài tiếp theo, chúng ta sẽ học cách xây dựng <b>Server đa luồng (Multi-threaded Server)</b> — cho phép nhiều client kết nối cùng lúc.
+            </p>
+        </section>
+    </main>
+    <footer>
+        <p><i>© 2025 - Blog Lập Trình Mạng với Java</i></p>
+    </footer>
+</body>
+</html>

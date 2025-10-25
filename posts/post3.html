@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <title>Xây dựng Server đa luồng trong Java</title>
+    <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+    <header>
+        <h1>Xây dựng Server đa luồng (Multi-threaded Server) trong Java</h1>
+        <nav><a href="../index.html">← Trở về trang chủ</a></nav>
+    </header>
+    <main>
+        <p><b>Ngày đăng:</b> 21/10/2025</p>
+
+        <section>
+            <h2>1. Tại sao cần server đa luồng?</h2>
+            <p>
+                Trong mô hình client-server thông thường, nếu server chỉ xử lý <b>một client tại một thời điểm</b>, 
+                các client khác sẽ phải chờ đến khi kết nối trước đó kết thúc. Điều này làm giảm hiệu suất nghiêm trọng.
+            </p>
+            <p>
+                Để giải quyết, ta cần <b>đa luồng (multi-threading)</b>: mỗi khi có một client kết nối mới, 
+                server sẽ tạo một thread riêng để phục vụ kết nối đó. 
+                Nhờ vậy, nhiều client có thể giao tiếp với server đồng thời mà không bị nghẽn.
+            </p>
+        </section>
+
+        <section>
+            <h2>2. Cách Java xử lý đa luồng trong lập trình mạng</h2>
+            <p>
+                Java hỗ trợ đa luồng từ cấp độ ngôn ngữ. 
+                Mỗi thread trong Java là một đối tượng của lớp <code>Thread</code> hoặc một tác vụ thực thi <code>Runnable</code>.  
+                Khi kết hợp với <b>ServerSocket</b>, ta có thể tạo một vòng lặp chính để lắng nghe kết nối, 
+                và mỗi khi có client mới, tạo một thread riêng cho client đó.
+            </p>
+        </section>
+
+        <section>
+            <h2>3. Ví dụ: Multi-threaded Server đơn giản</h2>
+
+            <pre><code>
+// Server.java
+import java.io.*;
+import java.net.*;
+
+public class Server {
+    public static void main(String[] args) throws IOException {
+        ServerSocket serverSocket = new ServerSocket(1234);
+        System.out.println("Server đang chạy, chờ kết nối...");
+
+        while (true) {
+            Socket clientSocket = serverSocket.accept();
+            System.out.println("Kết nối mới từ: " + clientSocket.getInetAddress());
+            new ClientHandler(clientSocket).start();
+        }
+    }
+}
+
+// Thread phục vụ mỗi client
+class ClientHandler extends Thread {
+    private Socket socket;
+
+    public ClientHandler(Socket socket) {
+        this.socket = socket;
+    }
+
+    public void run() {
+        try {
+            BufferedReader input = new BufferedReader(
+                new InputStreamReader(socket.getInputStream())
+            );
+            PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
+
+            String message;
+            while ((message = input.readLine()) != null) {
+                System.out.println("Client nói: " + message);
+                output.println("Server phản hồi: " + message.toUpperCase());
+            }
+
+            socket.close();
+        } catch (IOException e) {
+            System.out.println("Lỗi client: " + e.getMessage());
+        }
+    }
+}
+            </code></pre>
+
+            <p>
+                Ở ví dụ này, <code>Server</code> liên tục lắng nghe các yêu cầu từ client. 
+                Mỗi khi có kết nối, nó tạo ra một <code>ClientHandler</code> (thread mới) để xử lý độc lập.
+            </p>
+
+            <h3>Client mẫu để kiểm thử:</h3>
+            <pre><code>
+// Client.java
+import java.io.*;
+import java.net.*;
+
+public class Client {
+    public static void main(String[] args) throws IOException {
+        Socket socket = new Socket("localhost", 1234);
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
+        BufferedReader response = new BufferedReader(
+            new InputStreamReader(socket.getInputStream())
+        );
+
+        String msg;
+        while (true) {
+            System.out.print("Bạn: ");
+            msg = input.readLine();
+            if ("exit".equalsIgnoreCase(msg)) break;
+            output.println(msg);
+            System.out.println("Server: " + response.readLine());
+        }
+
+        socket.close();
+    }
+}
+            </code></pre>
+
+            <p>
+                Mở nhiều cửa sổ console và chạy nhiều client cùng lúc — bạn sẽ thấy mỗi client đều nhận phản hồi riêng biệt, 
+                minh chứng server đang hoạt động đa luồng.
+            </p>
+        </section>
+
+        <section>
+            <h2>4. Kết luận</h2>
+            <p>
+                Server đa luồng là nền tảng cho các hệ thống mạng hiện đại, 
+                từ web server, chat server đến game online. 
+                Java cung cấp API mạnh mẽ và dễ dùng để xây dựng các hệ thống như vậy.  
+                Trong bài sau, chúng ta sẽ mở rộng mô hình này thành <b>Server Chat nhiều người</b> 
+                — nơi các client có thể gửi tin nhắn và nhận phản hồi từ những người khác trong cùng phòng.
+            </p>
+        </section>
+    </main>
+    <footer>
+        <p><i>© 2025 - Blog Lập Trình Mạng với Java</i></p>
+    </footer>
+</body>
+</html>
