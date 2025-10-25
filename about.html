@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Giới thiệu - Blog Lập Trình Mạng</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .about-container {
+      max-width: 850px;
+      margin: 40px auto;
+      padding: 30px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .about-photo {
+      flex: 0 0 220px;
+      height: 220px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid #0078ff;
+      background: #f0f0f0 center/cover no-repeat;
+      background-image: url("img/profile.jpg"); /* ← Thay ảnh của bạn vào đây */
+    }
+
+    .about-info {
+      flex: 1;
+    }
+
+    .about-info h2 {
+      margin-top: 0;
+      color: #2c3e50;
+    }
+
+    .about-info p {
+      line-height: 1.7;
+      color: #333;
+      font-size: 1.05em;
+    }
+
+    .highlight {
+      color: #0078ff;
+      font-weight: bold;
+    }
+
+    .quote {
+      margin-top: 20px;
+      font-style: italic;
+      color: #555;
+      border-left: 4px solid #0078ff;
+      padding-left: 12px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Giới thiệu</h1>
+    <nav>
+      <a href="index.html">Trang chủ</a>
+      <a href="about.html" class="active">Giới thiệu</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="about-container">
+      <div class="about-photo"></div>
+
+      <div class="about-info">
+        <h2>Nguyễn Thái Thiên Tứ</h2>
+        <p><b>Ngày sinh:</b> 02/09/2004</p>
+        <p><b>Cung hoàng đạo:</b> Xử Nữ ♍</p>
+        <p>
+          Tôi là một sinh viên đam mê công nghệ, đặc biệt quan tâm đến <span class="highlight">lập trình mạng, bảo mật và phát triển hệ thống</span>.
+          Mục tiêu của tôi là tạo ra những ứng dụng không chỉ hoạt động tốt mà còn bền vững, an toàn và có thể mở rộng trong tương lai.
+        </p>
+        <p>
+          Blog này được xây dựng hoàn toàn bằng mã nguồn tĩnh — không cơ sở dữ liệu, không framework nặng nề — để thể hiện cách một lập trình viên có thể biến ý tưởng thành sản phẩm thực tế chỉ bằng HTML, CSS và JavaScript thuần.
+        </p>
+
+        <p class="quote">“Hiểu mạng – kiểm soát dữ liệu – và tạo ra giá trị từ kết nối.”</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 - Thiết kế bởi Nguyễn Thái Thiên Tứ</p>
+  </footer>
+</body>
+</html>
