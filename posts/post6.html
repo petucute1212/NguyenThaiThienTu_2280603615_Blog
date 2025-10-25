@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <title>Xây dựng Mini FTP Server trong Java</title>
+    <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+    <header>
+        <h1>Xây dựng Mini FTP Server trong Java</h1>
+        <nav><a href="../index.html">← Trở về trang chủ</a></nav>
+    </header>
+
+    <main>
+        <p><b>Ngày đăng:</b> 24/10/2025</p>
+
+        <section>
+            <h2>1. Giới thiệu</h2>
+            <p>
+                FTP (File Transfer Protocol) là giao thức phổ biến để trao đổi file giữa client và server.  
+                Trong bài này, ta sẽ xây dựng một phiên bản thu nhỏ — gọi là <b>Mini FTP Server</b> — 
+                cho phép client gửi lệnh để tải lên, tải xuống hoặc xem danh sách file có trên server.
+            </p>
+        </section>
+
+        <section>
+            <h2>2. Kiến trúc tổng thể</h2>
+            <ul>
+                <li>Server chạy liên tục, chờ client kết nối qua TCP (port cố định, ví dụ 2121).</li>
+                <li>Client gửi lệnh text: <code>LIST</code>, <code>GET filename</code>, <code>PUT filename</code>, <code>EXIT</code>.</li>
+                <li>Server đọc lệnh, phản hồi kết quả hoặc dữ liệu file tương ứng.</li>
+                <li>Các file được lưu trữ trong thư mục gốc của server (ví dụ: <code>server_files/</code>).</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>3. Mã nguồn minh họa</h2>
+
+            <h3>FTPServer.java</h3>
+            <pre><code>
+import java.io.*;
+import java.net.*;
+import java.util.*;
+
+public class FTPServer {
+    private static final int PORT = 2121;
+    private static final String ROOT_DIR = "server_files";
+
+    public static void main(String[] args) throws IOException {
+        ServerSocket serverSocket = new ServerSocket(PORT);
+        System.out.println("Mini FTP Server đang chạy trên cổng " + PORT);
+
+        while (true) {
+            Socket clientSocket = serverSocket.accept();
+            System.out.println("Client kết nối: " + clientSocket.getInetAddress());
+            new ClientHandler(clientSocket).start();
+        }
+    }
+
+    private static class ClientHandler extends Thread {
+        private Socket socket;
+
+        public ClientHandler(Socket socket) {
+            this.socket = socket;
+        }
+
+        public void run() {
+            try {
+                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                DataInputStream dataIn = new DataInputStream(socket.getInputStream());
+                DataOutputStream dataOut = new DataOutputStream(socket.getOutputStream());
+
+                out.println("Kết nối thành công. Nhập lệnh (LIST, GET, PUT, EXIT):");
+
+                while (true) {
+                    String command = in.readLine();
+                    if (command == null) break;
+
+                    if (command.equalsIgnoreCase("LIST")) {
+                        File folder = new File(ROOT_DIR);
+                        File[] files = folder.listFiles();
+                        if (files == null || files.length == 0) {
+                            out.println("Thư mục rỗng.");
+                        } else {
+                            out.println("Danh sách file:");
+                            for (File f : files) {
+                                out.println(" - " + f.getName());
+                            }
+                        }
+
+                    } else if (command.startsWith("GET ")) {
+                        String filename = command.substring(4).trim();
+                        File file = new File(ROOT_DIR + "/" + filename);
+                        if (!file.exists()) {
+                            out.println("File không tồn tại.");
+                            continue;
+                        }
+
+                        out.println("SENDING " + file.length());
+                        FileInputStream fis = new FileInputStream(file);
+                        byte[] buffer = new byte[4096];
+                        int count;
+                        while ((count = fis.read(buffer)) > 0) {
+                            dataOut.write(buffer, 0, count);
+                        }
+                        fis.close();
+                        out.println("DONE");
+
+                    } else if (command.startsWith("PUT ")) {
+                        String filename = command.substring(4).trim();
+                        File file = new File(ROOT_DIR + "/" + filename);
+                        out.println("READY");
+
+                        long fileSize = Long.parseLong(in.readLine());
+                        FileOutputStream fos = new FileOutputStream(file);
+                        byte[] buffer = new byte[4096];
+                        long total = 0;
+                        int read;
+                        while (total < fileSize && (read = dataIn.read(buffer)) > 0) {
+                            fos.write(buffer, 0, read);
+                            total += read;
+                        }
+                        fos.close();
+                        out.println("UPLOAD DONE");
+
+                    } else if (command.equalsIgnoreCase("EXIT")) {
+                        out.println("Tạm biệt!");
+                        break;
+                    } else {
+                        out.println("Lệnh không hợp lệ.");
+                    }
+                }
+
+                socket.close();
+            } catch (IOException e) {
+                System.out.println("Lỗi client: " + e.getMessage());
+            }
+        }
+    }
+}
+            </code></pre>
+
+            <h3>FTPClient.java</h3>
+            <pre><code>
+import java.io.*;
+import java.net.*;
+
+public class FTPClient {
+    public static void main(String[] args) throws IOException {
+        Socket socket = new Socket("localhost", 2121);
+        BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+        DataInputStream dataIn = new DataInputStream(socket.getInputStream());
+        DataOutputStream dataOut = new DataOutputStream(socket.getOutputStream());
+
+        System.out.println(in.readLine());
+
+        String command;
+        while (true) {
+            System.out.print("ftp> ");
+            command = userInput.readLine();
+            out.println(command);
+
+            if (command.equalsIgnoreCase("EXIT")) break;
+
+            if (command.equalsIgnoreCase("LIST")) {
+                String response;
+                while ((response = in.readLine()) != null && !response.equals("DONE")) {
+                    System.out.println(response);
+                    if (!in.ready()) break;
+                }
+
+            } else if (command.startsWith("GET ")) {
+                String filename = command.substring(4).trim();
+                String status = in.readLine();
+                if (status.startsWith("SENDING")) {
+                    long fileSize = Long.parseLong(status.split(" ")[1]);
+                    FileOutputStream fos = new FileOutputStream("download_" + filename);
+                    byte[] buffer = new byte[4096];
+                    int read;
+                    long total = 0;
+                    while (total < fileSize && (read = dataIn.read(buffer)) > 0) {
+                        fos.write(buffer, 0, read);
+                        total += read;
+                    }
+                    fos.close();
+                    System.out.println("Tải file hoàn tất.");
+                } else {
+                    System.out.println(status);
+                }
+
+            } else if (command.startsWith("PUT ")) {
+                String filename = command.substring(4).trim();
+                File file = new File(filename);
+                if (!file.exists()) {
+                    System.out.println("File không tồn tại cục bộ.");
+                    continue;
+                }
+
+                String ready = in.readLine();
+                if (ready.equals("READY")) {
+                    out.println(file.length());
+                    FileInputStream fis = new FileInputStream(file);
+                    byte[] buffer = new byte[4096];
+                    int read;
+                    while ((read = fis.read(buffer)) > 0) {
+                        dataOut.write(buffer, 0, read);
+                    }
+                    fis.close();
+                    System.out.println(in.readLine());
+                }
+            }
+        }
+
+        socket.close();
+        System.out.println("Đã ngắt kết nối khỏi server.");
+    }
+}
+            </code></pre>
+        </section>
+
+        <section>
+            <h2>4. Kết quả và kiểm thử</h2>
+            <p>
+                Sau khi chạy server và client, bạn có thể thử:
+            </p>
+            <ul>
+                <li><code>LIST</code> → hiển thị danh sách file trên server.</li>
+                <li><code>PUT test.txt</code> → gửi file <code>test.txt</code> từ máy client lên server.</li>
+                <li><code>GET example.txt</code> → tải file từ server về máy client.</li>
+                <li><code>EXIT</code> → thoát kết nối.</li>
+            </ul>
+            <p>
+                Kết quả hiển thị rõ ràng trong terminal, giúp kiểm chứng hoạt động của từng lệnh.
+            </p>
+        </section>
+
+        <section>
+            <h2>5. Kết luận</h2>
+            <p>
+                Mini FTP Server là mô hình thu nhỏ của hệ thống FTP thực tế.  
+                Từ đây, bạn có thể mở rộng thêm:
+            </p>
+            <ul>
+                <li>Thêm xác thực đăng nhập (username / password).</li>
+                <li>Thêm tính năng đa luồng để nhiều client cùng truy cập.</li>
+                <li>Mã hóa dữ liệu khi truyền để đảm bảo bảo mật.</li>
+                <li>Tạo giao diện đồ họa quản lý file.</li>
+            </ul>
+            <p>
+                Đây là nền tảng quan trọng để bước sang phần tiếp theo — 
+                <b>mã hóa, bảo mật và tối ưu hóa truyền dữ liệu qua mạng trong Java</b>.
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <p><i>© 2025 - Blog Lập Trình Mạng với Java</i></p>
+    </footer>
+</body>
+</html>

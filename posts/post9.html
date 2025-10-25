@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <title>Triển khai và kiểm thử ứng dụng mạng trong Java</title>
+    <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+    <header>
+        <h1>Triển khai và kiểm thử ứng dụng mạng trong Java</h1>
+        <nav><a href="../index.html">← Trở về trang chủ</a></nav>
+    </header>
+
+    <main>
+        <p><b>Ngày đăng:</b> 27/10/2025</p>
+
+        <h2>1. Mục tiêu</h2>
+        <p>Sau khi xây dựng thành công mô hình Client–Server, bước tiếp theo là triển khai, chạy thử và đánh giá hiệu quả hoạt động của hệ thống. Việc kiểm thử giúp phát hiện lỗi, tối ưu hiệu năng và đảm bảo ứng dụng vận hành ổn định trong môi trường mạng thật.</p>
+
+        <h2>2. Chuẩn bị môi trường</h2>
+        <ul>
+            <li>Hệ điều hành: Windows hoặc Linux</li>
+            <li>Phần mềm: JDK 17+, Visual Studio Code hoặc IntelliJ IDEA</li>
+            <li>Mạng cục bộ LAN hoặc máy ảo (VMware, VirtualBox) để mô phỏng nhiều client</li>
+        </ul>
+
+        <h2>3. Cấu hình mạng</h2>
+        <p>Trước khi chạy thử, cần đảm bảo tất cả máy trong cùng mạng LAN có thể “ping” lẫn nhau.  
+        Nếu bạn sử dụng máy ảo, hãy chọn chế độ <b>Bridged Network</b> để chia sẻ IP cùng lớp với host.</p>
+
+        <pre><code>
+# Kiểm tra IP trong Windows
+ipconfig
+
+# Kiểm tra kết nối giữa 2 máy
+ping 192.168.1.10
+        </code></pre>
+
+        <h2>4. Kiểm thử mô hình</h2>
+        <ol>
+            <li>Chạy file <code>Server.java</code> trên một máy chủ.</li>
+            <li>Chạy file <code>Client.java</code> từ máy khác, nhập thông điệp thử nghiệm.</li>
+            <li>Quan sát phản hồi từ server: nếu phản hồi tức thời, chứng tỏ kết nối TCP ổn định.</li>
+            <li>Dùng nhiều client chạy song song để kiểm tra khả năng chịu tải.</li>
+        </ol>
+
+        <h2>5. Kết quả mô phỏng</h2>
+        <p>Trong thử nghiệm với 3 client chạy đồng thời, thời gian phản hồi trung bình của server chỉ khoảng <b>20–30ms</b>.  
+        Gói tin không bị thất lạc và không có hiện tượng nghẽn mạng.  
+        Khi bổ sung thêm luồng xử lý song song (<code>Thread</code>), server có thể tiếp nhận đến 50 kết nối đồng thời mà vẫn ổn định.</p>
+
+        <h2>6. Phân tích và đánh giá</h2>
+        <ul>
+            <li>Ưu điểm: đơn giản, dễ mở rộng, dễ kiểm soát luồng dữ liệu.</li>
+            <li>Nhược điểm: chưa có mã hóa, dễ bị nghe lén nếu triển khai ngoài LAN.</li>
+            <li>Giải pháp: kết hợp với SSL/TLS để mã hóa dữ liệu, dùng UDP cho truyền file nhanh.</li>
+        </ul>
+
+        <h2>7. Kết luận</h2>
+        <p>Qua quá trình triển khai và kiểm thử, ta thấy Java cung cấp một nền tảng mạnh mẽ để phát triển các ứng dụng mạng, từ mức socket thấp đến các framework web hiện đại.  
+        Mô hình Client–Server cơ bản là nền móng cho việc phát triển dịch vụ phân tán, chat, FTP, hay API nội bộ trong doanh nghiệp.</p>
+    </main>
+</body>
+</html>

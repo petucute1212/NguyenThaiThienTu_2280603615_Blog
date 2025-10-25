@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <title>Bảo mật trong lập trình mạng</title>
+    <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+    <header>
+        <h1>Bảo mật trong lập trình mạng</h1>
+        <nav><a href="../index.html">← Trở về trang chủ</a></nav>
+    </header>
+
+    <main>
+        <p><b>Ngày đăng:</b> 25/10/2025</p>
+
+        <h2>1. Tầm quan trọng của bảo mật mạng</h2>
+        <p>Trong lập trình mạng, bảo mật là yếu tố sống còn. Một ứng dụng có thể hoạt động tốt nhưng nếu không đảm bảo an toàn thì rất dễ bị tấn công, đánh cắp dữ liệu hoặc chiếm quyền điều khiển.</p>
+
+        <h2>2. Các rủi ro phổ biến</h2>
+        <ul>
+            <li><b>Nghe lén (Sniffing):</b> Hacker có thể bắt gói tin và đọc dữ liệu truyền đi.</li>
+            <li><b>Giả mạo (Spoofing):</b> Giả mạo địa chỉ IP hoặc người gửi để chiếm quyền truy cập.</li>
+            <li><b>Tấn công từ chối dịch vụ (DoS/DDoS):</b> Gửi quá nhiều yêu cầu để làm sập hệ thống.</li>
+            <li><b>SQL Injection và XSS:</b> Tấn công vào tầng ứng dụng qua dữ liệu đầu vào không được kiểm soát.</li>
+        </ul>
+
+        <h2>3. Giải pháp bảo mật cơ bản</h2>
+        <ol>
+            <li><b>Mã hóa dữ liệu:</b> Sử dụng SSL/TLS khi truyền dữ liệu giữa client và server.</li>
+            <li><b>Xác thực người dùng:</b> Dùng token, OAuth2 hoặc session an toàn.</li>
+            <li><b>Giới hạn quyền truy cập:</b> Không cho phép người dùng thao tác vượt quyền.</li>
+            <li><b>Kiểm tra dữ liệu đầu vào:</b> Tránh SQL injection và XSS bằng validate input.</li>
+        </ol>
+
+        <h2>4. Thực hành bảo mật trong Java</h2>
+        <p>Java hỗ trợ nhiều API phục vụ bảo mật mạng như:</p>
+        <ul>
+            <li><code>javax.net.ssl</code> để thiết lập kết nối HTTPS.</li>
+            <li><code>MessageDigest</code> để băm dữ liệu (SHA-256, MD5).</li>
+            <li><code>KeyStore</code> để quản lý chứng chỉ và khóa bảo mật.</li>
+        </ul>
+
+        <h2>5. Kết luận</h2>
+        <p>Bảo mật không chỉ là lớp “bổ sung” mà phải được tích hợp ngay từ khi thiết kế ứng dụng. Một hệ thống mạng an toàn là sự kết hợp giữa mã hóa, kiểm soát truy cập và quản lý lỗi cẩn thận.</p>
+    </main>
+</body>
+</html>

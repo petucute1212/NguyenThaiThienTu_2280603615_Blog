@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <title>Xây dựng Chat Server nhiều người trong Java</title>
+    <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+    <header>
+        <h1>Xây dựng Chat Server nhiều người (Group Chat) trong Java</h1>
+        <nav><a href="../index.html">← Trở về trang chủ</a></nav>
+    </header>
+
+    <main>
+        <p><b>Ngày đăng:</b> 22/10/2025</p>
+
+        <section>
+            <h2>1. Giới thiệu</h2>
+            <p>
+                Trong các ứng dụng chat hiện đại, server không chỉ phản hồi từng client, 
+                mà phải truyền tải thông điệp tới tất cả những người đang tham gia cùng “phòng chat”.
+                Để làm được điều này, ta cần xây dựng một **server có khả năng broadcast (phát thông điệp đến mọi client đang kết nối)**.
+            </p>
+        </section>
+
+        <section>
+            <h2>2. Ý tưởng triển khai</h2>
+            <ul>
+                <li>Server lắng nghe các kết nối mới qua <code>ServerSocket</code>.</li>
+                <li>Mỗi client được xử lý trong một thread riêng (giống bài trước).</li>
+                <li>Tất cả client đang hoạt động được lưu trong một danh sách chung (ví dụ: <code>ArrayList&lt;PrintWriter&gt;</code>).</li>
+                <li>Khi một client gửi tin nhắn, server gửi nó đến mọi client khác trong danh sách.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>3. Mã nguồn minh họa</h2>
+
+            <h3>Server.java</h3>
+            <pre><code>
+import java.io.*;
+import java.net.*;
+import java.util.*;
+
+public class ChatServer {
+    private static final int PORT = 1234;
+    private static Set&lt;PrintWriter&gt; clientWriters = new HashSet&lt;&gt;();
+
+    public static void main(String[] args) throws IOException {
+        System.out.println("Chat Server đang chạy...");
+        ServerSocket serverSocket = new ServerSocket(PORT);
+
+        while (true) {
+            Socket clientSocket = serverSocket.accept();
+            System.out.println("Client mới kết nối: " + clientSocket.getInetAddress());
+            new ClientHandler(clientSocket).start();
+        }
+    }
+
+    private static class ClientHandler extends Thread {
+        private Socket socket;
+        private PrintWriter out;
+        private BufferedReader in;
+        private String name;
+
+        public ClientHandler(Socket socket) {
+            this.socket = socket;
+        }
+
+        public void run() {
+            try {
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                out = new PrintWriter(socket.getOutputStream(), true);
+
+                out.println("Nhập tên của bạn:");
+                name = in.readLine();
+                synchronized (clientWriters) {
+                    clientWriters.add(out);
+                }
+
+                broadcast(">> " + name + " đã tham gia phòng chat!");
+
+                String message;
+                while ((message = in.readLine()) != null) {
+                    if (message.equalsIgnoreCase("exit")) break;
+                    broadcast(name + ": " + message);
+                }
+
+                synchronized (clientWriters) {
+                    clientWriters.remove(out);
+                }
+                broadcast("<< " + name + " đã rời phòng chat.");
+                socket.close();
+
+            } catch (IOException e) {
+                System.out.println("Lỗi client: " + e.getMessage());
+            }
+        }
+
+        private void broadcast(String message) {
+            synchronized (clientWriters) {
+                for (PrintWriter writer : clientWriters) {
+                    writer.println(message);
+                }
+            }
+        }
+    }
+}
+            </code></pre>
+
+            <h3>Client.java</h3>
+            <pre><code>
+import java.io.*;
+import java.net.*;
+
+public class ChatClient {
+    public static void main(String[] args) throws IOException {
+        Socket socket = new Socket("localhost", 1234);
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader serverIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+
+        // Thread nhận tin nhắn từ server
+        new Thread(() -> {
+            try {
+                String serverMsg;
+                while ((serverMsg = serverIn.readLine()) != null) {
+                    System.out.println(serverMsg);
+                }
+            } catch (IOException e) {
+                System.out.println("Mất kết nối server.");
+            }
+        }).start();
+
+        // Gửi tin nhắn lên server
+        String msg;
+        while ((msg = input.readLine()) != null) {
+            out.println(msg);
+            if ("exit".equalsIgnoreCase(msg)) break;
+        }
+        socket.close();
+    }
+}
+            </code></pre>
+
+            <p>
+                Khi bạn mở nhiều cửa sổ client và kết nối cùng lúc, mọi tin nhắn đều sẽ hiển thị trên tất cả màn hình.  
+                Đây chính là mô hình **broadcast chat cơ bản** – bước đầu của mọi ứng dụng chat hiện đại.
+            </p>
+        </section>
+
+        <section>
+            <h2>4. Mở rộng và cải tiến</h2>
+            <ul>
+                <li>Thêm timestamp (thời gian gửi tin).</li>
+                <li>Thêm nickname cố định và xác thực đơn giản.</li>
+                <li>Thêm command như <code>/list</code> để hiển thị người đang online.</li>
+                <li>Tách các phòng chat riêng biệt (multi-room).</li>
+                <li>Kết hợp GUI bằng JavaFX hoặc Swing để hiển thị giao diện thân thiện hơn.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>5. Kết luận</h2>
+            <p>
+                Chat Server nhiều người là ví dụ thực tế cho thấy sức mạnh của lập trình mạng Java kết hợp đa luồng.  
+                Bằng việc dùng chung danh sách writer và broadcast, ta có thể dễ dàng mở rộng thành ứng dụng chat hoàn chỉnh, 
+                hoặc làm nền cho game online và các ứng dụng cộng tác.
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <p><i>© 2025 - Blog Lập Trình Mạng với Java</i></p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <title>Xây dựng giao thức truyền file trong Java</title>
+    <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+    <header>
+        <h1>Xây dựng giao thức truyền file giữa Client và Server trong Java</h1>
+        <nav><a href="../index.html">← Trở về trang chủ</a></nav>
+    </header>
+
+    <main>
+        <p><b>Ngày đăng:</b> 23/10/2025</p>
+
+        <section>
+            <h2>1. Giới thiệu</h2>
+            <p>
+                Trong các hệ thống mạng, việc truyền tệp tin (file) là một chức năng quan trọng – 
+                từ FTP server cho đến hệ thống cloud như Google Drive.  
+                Mục tiêu bài này là xây dựng một mô hình đơn giản: <b>client gửi file lên server</b> hoặc <b>server gửi file cho client</b> 
+                qua giao thức TCP.
+            </p>
+        </section>
+
+        <section>
+            <h2>2. Nguyên lý truyền file qua socket</h2>
+            <ul>
+                <li>File được đọc thành các khối dữ liệu nhị phân (byte).</li>
+                <li>Dữ liệu này được gửi qua luồng <code>OutputStream</code> của socket.</li>
+                <li>Bên nhận dùng <code>InputStream</code> để đọc lại các byte đó và ghi vào file mới.</li>
+                <li>Hai bên phải thống nhất trước: tên file, kích thước hoặc tín hiệu kết thúc.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>3. Ví dụ: Client gửi file lên Server</h2>
+
+            <h3>Server.java</h3>
+            <pre><code>
+import java.io.*;
+import java.net.*;
+
+public class FileServer {
+    public static void main(String[] args) throws IOException {
+        ServerSocket serverSocket = new ServerSocket(5000);
+        System.out.println("Server sẵn sàng nhận file...");
+
+        Socket socket = serverSocket.accept();
+        System.out.println("Client đã kết nối: " + socket.getInetAddress());
+
+        DataInputStream dis = new DataInputStream(socket.getInputStream());
+        FileOutputStream fos = new FileOutputStream("received_file.txt");
+
+        // Đọc kích thước file
+        long fileSize = dis.readLong();
+        byte[] buffer = new byte[4096];
+        int read;
+        long totalRead = 0;
+
+        while ((read = dis.read(buffer, 0, (int)Math.min(buffer.length, fileSize - totalRead))) > 0) {
+            fos.write(buffer, 0, read);
+            totalRead += read;
+            if (totalRead >= fileSize) break;
+        }
+
+        System.out.println("Đã nhận file thành công.");
+        fos.close();
+        dis.close();
+        socket.close();
+        serverSocket.close();
+    }
+}
+            </code></pre>
+
+            <h3>Client.java</h3>
+            <pre><code>
+import java.io.*;
+import java.net.*;
+
+public class FileClient {
+    public static void main(String[] args) throws IOException {
+        Socket socket = new Socket("localhost", 5000);
+        File file = new File("send_this.txt");
+
+        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+        FileInputStream fis = new FileInputStream(file);
+
+        dos.writeLong(file.length()); // gửi kích thước file
+
+        byte[] buffer = new byte[4096];
+        int read;
+        while ((read = fis.read(buffer)) > 0) {
+            dos.write(buffer, 0, read);
+        }
+
+        System.out.println("Đã gửi file thành công.");
+        fis.close();
+        dos.close();
+        socket.close();
+    }
+}
+            </code></pre>
+
+            <p>
+                Khi chạy, client sẽ gửi file <code>send_this.txt</code> tới server,  
+                server sẽ lưu lại thành <code>received_file.txt</code> trong cùng thư mục.  
+                Đây là nguyên lý cơ bản của mọi hệ thống truyền file qua TCP.
+            </p>
+        </section>
+
+        <section>
+            <h2>4. Cải tiến và mở rộng</h2>
+            <ul>
+                <li>Truyền nhiều file trong cùng một kết nối (gửi kèm tên file trước mỗi luồng dữ liệu).</li>
+                <li>Thêm xác thực người gửi (login, token).</li>
+                <li>Thêm hiển thị tiến trình truyền file (% hoàn thành).</li>
+                <li>Thêm chức năng <b>tải về từ server</b> thay vì chỉ gửi lên.</li>
+                <li>Mã hóa file bằng AES trước khi gửi để bảo mật.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>5. Kết luận</h2>
+            <p>
+                Truyền file là một trong những ứng dụng thiết yếu của lập trình mạng.  
+                Khi hiểu cơ chế byte stream, ta có thể dễ dàng mở rộng sang các ứng dụng thực tế như:
+            </p>
+            <ul>
+                <li>Hệ thống chia sẻ dữ liệu nội bộ.</li>
+                <li>Máy chủ sao lưu tự động.</li>
+                <li>Truyền ảnh, video, hoặc dữ liệu nhị phân khác.</li>
+            </ul>
+            <p>
+                Trong bài tiếp theo, chúng ta sẽ kết hợp các kiến thức này để <b>xây dựng mô hình “Mini FTP Server”</b> — 
+                nơi client có thể gửi, tải và liệt kê file trên server qua một giao thức riêng.
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <p><i>© 2025 - Blog Lập Trình Mạng với Java</i></p>
+    </footer>
+</body>
+</html>

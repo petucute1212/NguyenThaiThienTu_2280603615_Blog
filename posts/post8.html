@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <title>Xây dựng ứng dụng Client - Server trong Java</title>
+    <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+    <header>
+        <h1>Xây dựng ứng dụng Client - Server trong Java</h1>
+        <nav><a href="../index.html">← Trở về trang chủ</a></nav>
+    </header>
+
+    <main>
+        <p><b>Ngày đăng:</b> 26/10/2025</p>
+
+        <h2>1. Mô hình Client–Server là gì?</h2>
+        <p>Client–Server là mô hình mạng trong đó một hoặc nhiều máy client gửi yêu cầu đến một máy server, nơi xử lý và trả kết quả. Đây là nền tảng của hầu hết các ứng dụng mạng hiện đại — từ web, game online cho đến hệ thống ngân hàng.</p>
+
+        <h2>2. Cấu trúc cơ bản của mô hình</h2>
+        <ul>
+            <li><b>Server:</b> chờ kết nối từ client, nhận yêu cầu và phản hồi.</li>
+            <li><b>Client:</b> chủ động kết nối đến server để gửi và nhận dữ liệu.</li>
+        </ul>
+
+        <h2>3. Cài đặt mô hình bằng Java Socket</h2>
+
+        <h3>Server.java</h3>
+        <pre><code>
+import java.io.*;
+import java.net.*;
+
+public class Server {
+    public static void main(String[] args) throws IOException {
+        ServerSocket server = new ServerSocket(8080);
+        System.out.println("Server đang chờ kết nối...");
+
+        Socket socket = server.accept();
+        System.out.println("Đã kết nối với client!");
+
+        BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
+
+        String message = input.readLine();
+        System.out.println("Client gửi: " + message);
+        output.println("Server đã nhận: " + message);
+
+        socket.close();
+        server.close();
+    }
+}
+        </code></pre>
+
+        <h3>Client.java</h3>
+        <pre><code>
+import java.io.*;
+import java.net.*;
+
+public class Client {
+    public static void main(String[] args) throws IOException {
+        Socket socket = new Socket("localhost", 8080);
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
+        BufferedReader response = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+        System.out.print("Nhập tin nhắn gửi đến server: ");
+        String msg = input.readLine();
+        output.println(msg);
+        System.out.println("Server phản hồi: " + response.readLine());
+
+        socket.close();
+    }
+}
+        </code></pre>
+
+        <h2>4. Cách chạy thử</h2>
+        <ol>
+            <li>Chạy file <code>Server.java</code> trước.</li>
+            <li>Tiếp theo chạy <code>Client.java</code>.</li>
+            <li>Nhập một chuỗi bất kỳ — ví dụ: “Xin chào server!” — bạn sẽ thấy phản hồi ngay lập tức.</li>
+        </ol>
+
+        <h2>5. Mở rộng</h2>
+        <p>Bạn có thể mở rộng mô hình bằng cách:</p>
+        <ul>
+            <li>Tạo <b>multi-thread server</b> cho phép nhiều client cùng kết nối.</li>
+            <li>Thêm <b>chức năng chat hai chiều</b>.</li>
+            <li>Triển khai giao thức TCP hoặc UDP riêng.</li>
+        </ul>
+
+        <h2>6. Kết luận</h2>
+        <p>Việc hiểu và thực hành mô hình Client–Server giúp lập trình viên nắm được cách thức giao tiếp qua mạng, đồng thời mở đường cho việc xây dựng các ứng dụng phân tán, web service và IoT trong tương lai.</p>
+    </main>
+</body>
+</html>
