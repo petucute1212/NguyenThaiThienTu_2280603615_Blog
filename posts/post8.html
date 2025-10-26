@@ -8,20 +8,82 @@
 <body>
     <header>
         <h1>Xây dựng ứng dụng Client - Server trong Java</h1>
-        <nav><a href="../index.html">← Trở về trang chủ</a></nav>
+        <nav><a href="../index.html">⇠ Trở về trang chủ</a></nav>
     </header>
 
     <main>
-        <p><b>Ngày đăng:</b> 26/10/2025</p>
+        <section>
+        <p style="color: #d4af37; font-size: 1.1em; margin-bottom: 25px;"><b>📅 Ngày đăng:</b> 26/10/2025</p>
 
-        <h2>1. Mô hình Client–Server là gì?</h2>
-        <p>Client–Server là mô hình mạng trong đó một hoặc nhiều máy client gửi yêu cầu đến một máy server, nơi xử lý và trả kết quả. Đây là nền tảng của hầu hết các ứng dụng mạng hiện đại — từ web, game online cho đến hệ thống ngân hàng.</p>
+            <h2>1. Mô hình Client–Server là gì?</h2>
+            <p>
+                Client–Server là mô hình mạng trong đó một hoặc nhiều máy client gửi yêu cầu đến một máy server, 
+                nơi xử lý và trả kết quả. Đây là nền tảng của hầu hết các ứng dụng mạng hiện đại — 
+                từ web, game online cho đến hệ thống ngân hàng.
+            </p>
+            
+            <h3>1.1. Đặc trưng của mô hình</h3>
+            <ul>
+                <li><b>Centralized:</b> Server là trung tâm, quản lý tất cả tài nguyên và logic nghiệp vụ</li>
+                <li><b>Asymmetric:</b> Server (powerful) vs Client (lighter weight)</li>
+                <li><b>Request-Response:</b> Client gửi request, server xử lý và phản hồi</li>
+                <li><b>Scalable:</b> Có thể thêm nhiều client mà không cần thay đổi server</li>
+            </ul>
+            
+            <h3>1.2. Ưu và nhược điểm</h3>
+            <p><b>Ưu điểm:</b></p>
+            <ul>
+                <li>Dễ quản lý và bảo trì (centralized)</li>
+                <li>Bảo mật tốt hơn (server kiểm soát)</li>
+                <li>Backup và recovery dễ dàng</li>
+                <li>Client đơn giản, không cần nhiều logic</li>
+                <li>Consistency về dữ liệu được đảm bảo</li>
+            </ul>
+            
+            <p><b>Nhược điểm:</b></p>
+            <ul>
+                <li>Single point of failure (nếu server down, toàn bộ hệ thống down)</li>
+                <li>Bottleneck khi có quá nhiều client</li>
+                <li>Chi phí server cao (cần hardware mạnh)</li>
+                <li>Network dependency (cần kết nối liên tục)</li>
+            </ul>
 
-        <h2>2. Cấu trúc cơ bản của mô hình</h2>
-        <ul>
-            <li><b>Server:</b> chờ kết nối từ client, nhận yêu cầu và phản hồi.</li>
-            <li><b>Client:</b> chủ động kết nối đến server để gửi và nhận dữ liệu.</li>
-        </ul>
+            <h2>2. Cấu trúc cơ bản của mô hình</h2>
+            <h3>2.1. Server</h3>
+            <p>
+                Server có nhiệm vụ:
+            </p>
+            <ul>
+                <li><b>Listen:</b> Lắng nghe kết nối từ client trên một port cụ thể</li>
+                <li><b>Accept:</b> Chấp nhận kết nối mới từ client</li>
+                <li><b>Process:</b> Xử lý yêu cầu từ client</li>
+                <li><b>Respond:</b> Gửi phản hồi về cho client</li>
+                <li><b>Manage:</b> Quản lý tài nguyên, connection pool, session</li>
+            </ul>
+            
+            <h3>2.2. Client</h3>
+            <p>
+                Client có nhiệm vụ:
+            </p>
+            <ul>
+                <li><b>Connect:</b> Chủ động kết nối đến server</li>
+                <li><b>Request:</b> Gửi yêu cầu đến server</li>
+                <li><b>Wait:</b> Chờ phản hồi từ server</li>
+                <li><b>Display:</b> Hiển thị kết quả cho người dùng</li>
+                <li><b>Disconnect:</b> Đóng kết nối khi hoàn thành</li>
+            </ul>
+            
+            <h3>2.3. Luồng hoạt động</h3>
+            <ol>
+                <li>Server khởi động và bind vào một port (ví dụ: 8080)</li>
+                <li>Server chạy vòng lặp listen và chờ client kết nối</li>
+                <li>Client khởi động và kết nối đến server (host:port)</li>
+                <li>Server accept kết nối và tạo socket mới</li>
+                <li>Client gửi yêu cầu (có thể nhiều lần)</li>
+                <li>Server xử lý và gửi phản hồi</li>
+                <li>Client nhận và hiển thị kết quả</li>
+                <li>Đóng kết nối (client hoặc server initiate)</li>
+            </ol>
 
         <h2>3. Cài đặt mô hình bằng Java Socket</h2>
 
@@ -90,6 +152,7 @@ public class Client {
 
         <h2>6. Kết luận</h2>
         <p>Việc hiểu và thực hành mô hình Client–Server giúp lập trình viên nắm được cách thức giao tiếp qua mạng, đồng thời mở đường cho việc xây dựng các ứng dụng phân tán, web service và IoT trong tương lai.</p>
+        </section>
     </main>
 </body>
 </html>

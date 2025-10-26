@@ -8,41 +8,159 @@
 <body>
     <header>
         <h1>Bảo mật trong lập trình mạng</h1>
-        <nav><a href="../index.html">← Trở về trang chủ</a></nav>
+        <nav><a href="../index.html">⇠ Trở về trang chủ</a></nav>
     </header>
 
     <main>
-        <p><b>Ngày đăng:</b> 25/10/2025</p>
+        <section>
+        <p style="color: #d4af37; font-size: 1.1em; margin-bottom: 25px;"><b>📅 Ngày đăng:</b> 25/10/2025</p>
 
-        <h2>1. Tầm quan trọng của bảo mật mạng</h2>
-        <p>Trong lập trình mạng, bảo mật là yếu tố sống còn. Một ứng dụng có thể hoạt động tốt nhưng nếu không đảm bảo an toàn thì rất dễ bị tấn công, đánh cắp dữ liệu hoặc chiếm quyền điều khiển.</p>
+            <h2>1. Tầm quan trọng của bảo mật mạng</h2>
+            <p>
+                Trong lập trình mạng, bảo mật là yếu tố sống còn. Một ứng dụng có thể hoạt động tốt nhưng nếu không đảm bảo an toàn thì rất dễ bị tấn công, đánh cắp dữ liệu hoặc chiếm quyền điều khiển.
+            </p>
+            
+            <h3>1.1. Hậu quả của thiếu bảo mật</h3>
+            <ul>
+                <li><b>Data breach:</b> Đánh cắp thông tin nhạy cảm như mật khẩu, số thẻ tín dụng</li>
+                <li><b>Identity theft:</b> Giả mạo danh tính người dùng</li>
+                <li><b>System compromise:</b> Hacker có thể kiểm soát toàn bộ hệ thống</li>
+                <li><b>Financial loss:</b> Tổn thất tài chính cho doanh nghiệp và cá nhân</li>
+                <li><b>Reputation damage:</b> Mất lòng tin của khách hàng</li>
+                <li><b>Legal consequences:</b> Vi phạm pháp luật về bảo vệ dữ liệu cá nhân</li>
+            </ul>
 
-        <h2>2. Các rủi ro phổ biến</h2>
-        <ul>
-            <li><b>Nghe lén (Sniffing):</b> Hacker có thể bắt gói tin và đọc dữ liệu truyền đi.</li>
-            <li><b>Giả mạo (Spoofing):</b> Giả mạo địa chỉ IP hoặc người gửi để chiếm quyền truy cập.</li>
-            <li><b>Tấn công từ chối dịch vụ (DoS/DDoS):</b> Gửi quá nhiều yêu cầu để làm sập hệ thống.</li>
-            <li><b>SQL Injection và XSS:</b> Tấn công vào tầng ứng dụng qua dữ liệu đầu vào không được kiểm soát.</li>
-        </ul>
+            <h2>2. Các rủi ro phổ biến</h2>
+            <h3>2.1. Nghe lén (Sniffing/Packet Capture)</h3>
+            <p>
+                Hacker có thể bắt gói tin và đọc dữ liệu truyền đi trong mạng local hoặc qua mạng công cộng.
+            </p>
+            <p><b>Giải pháp:</b> Mã hóa tất cả dữ liệu truyền đi (SSL/TLS, VPN)</p>
+            
+            <h3>2.2. Giả mạo (Spoofing)</h3>
+            <p>
+                Giả mạo địa chỉ IP hoặc người gửi để chiếm quyền truy cập hoặc lừa người dùng.
+            </p>
+            <p><b>Ví dụ:</b> Man-in-the-Middle attack, IP spoofing, Email spoofing</p>
+            
+            <h3>2.3. Tấn công từ chối dịch vụ (DoS/DDoS)</h3>
+            <p>
+                Gửi quá nhiều yêu cầu đến server để làm quá tải, khiến hệ thống không còn phục vụ được người dùng thật.
+            </p>
+            <p><b>Giải pháp:</b> Rate limiting, firewall, load balancing, CDN</p>
+            
+            <h3>2.4. SQL Injection và XSS</h3>
+            <p>
+                Tấn công vào tầng ứng dụng qua dữ liệu đầu vào không được kiểm soát.
+            </p>
+            <ul>
+                <li><b>SQL Injection:</b> Chèn mã SQL độc hại vào query</li>
+                <li><b>XSS (Cross-Site Scripting):</b> Chèn JavaScript vào trang web</li>
+                <li><b>CSRF:</b> Gửi request giả mạo từ browser của user</li>
+            </ul>
 
-        <h2>3. Giải pháp bảo mật cơ bản</h2>
-        <ol>
-            <li><b>Mã hóa dữ liệu:</b> Sử dụng SSL/TLS khi truyền dữ liệu giữa client và server.</li>
-            <li><b>Xác thực người dùng:</b> Dùng token, OAuth2 hoặc session an toàn.</li>
-            <li><b>Giới hạn quyền truy cập:</b> Không cho phép người dùng thao tác vượt quyền.</li>
-            <li><b>Kiểm tra dữ liệu đầu vào:</b> Tránh SQL injection và XSS bằng validate input.</li>
-        </ol>
+            <h2>3. Giải pháp bảo mật cơ bản</h2>
+            <h3>3.1. Mã hóa dữ liệu (Encryption)</h3>
+            <p>
+                Sử dụng SSL/TLS khi truyền dữ liệu giữa client và server để đảm bảo:
+            </p>
+            <ul>
+                <li>Confidentiality: Chỉ người có key mới đọc được</li>
+                <li>Integrity: Phát hiện nếu dữ liệu bị thay đổi</li>
+                <li>Authentication: Xác thực đúng server thật</li>
+            </ul>
+            
+            <h3>3.2. Xác thực người dùng (Authentication)</h3>
+            <ul>
+                <li><b>Username/Password:</b> Basic authentication (cần hash + salt)</li>
+                <li><b>JWT Token:</b> JSON Web Token cho stateless authentication</li>
+                <li><b>OAuth2:</b> Open Authorization cho third-party login</li>
+                <li><b>Multi-factor Authentication:</b> 2FA, OTP (One-Time Password)</li>
+            </ul>
+            
+            <h3>3.3. Phân quyền (Authorization)</h3>
+            <ul>
+                <li><b>Role-based Access Control (RBAC):</b> Phân quyền theo vai trò</li>
+                <li><b>Permission-based:</b> Kiểm tra quyền cụ thể cho từng hành động</li>
+                <li><b>Least privilege:</b> Chỉ cấp quyền tối thiểu cần thiết</li>
+            </ul>
+            
+            <h3>3.4. Validate và Sanitize Input</h3>
+            <p>
+                Luôn kiểm tra và làm sạch dữ liệu đầu vào:
+            </p>
+            <ul>
+                <li>Whitelist: Chỉ cho phép những gì được phép</li>
+                <li>Blacklist: Chặn những gì nguy hiểm</li>
+                <li>Escape special characters: HTML, SQL, JavaScript</li>
+                <li>Limit length: Tránh buffer overflow</li>
+            </ul>
 
-        <h2>4. Thực hành bảo mật trong Java</h2>
-        <p>Java hỗ trợ nhiều API phục vụ bảo mật mạng như:</p>
-        <ul>
-            <li><code>javax.net.ssl</code> để thiết lập kết nối HTTPS.</li>
-            <li><code>MessageDigest</code> để băm dữ liệu (SHA-256, MD5).</li>
-            <li><code>KeyStore</code> để quản lý chứng chỉ và khóa bảo mật.</li>
-        </ul>
+            <h2>4. Thực hành bảo mật trong Java</h2>
+            <p>
+                Java cung cấp nhiều API phục vụ bảo mật mạng:
+            </p>
+            <ul>
+                <li><b><code>javax.net.ssl</code>:</b> Thiết lập kết nối HTTPS</li>
+                <li><b><code>java.security.MessageDigest</code>:</b> Băm dữ liệu (SHA-256, SHA-512, MD5)</li>
+                <li><b><code>java.security.KeyStore</code>:</b> Quản lý chứng chỉ và khóa bảo mật</li>
+                <li><b><code>javax.crypto</code>:</b> Mã hóa/giải mã dữ liệu (AES, DES)</li>
+                <li><b><code>java.security.SecureRandom</code>:</b> Tạo số ngẫu nhiên an toàn</li>
+                <li><b><code>java.nio.channels.SelectionKey</code>:</b> Non-blocking I/O an toàn</li>
+            </ul>
+            
+            <h3>4.1. Ví dụ: Hash password với SHA-256 và Salt</h3>
+            <pre><code>
+import java.security.MessageDigest;
+import java.util.Random;
 
-        <h2>5. Kết luận</h2>
-        <p>Bảo mật không chỉ là lớp “bổ sung” mà phải được tích hợp ngay từ khi thiết kế ứng dụng. Một hệ thống mạng an toàn là sự kết hợp giữa mã hóa, kiểm soát truy cập và quản lý lỗi cẩn thận.</p>
+public class PasswordSecurity {
+    
+    public static String hashPassword(String password, String salt) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            digest.update((password + salt).getBytes());
+            byte[] hash = digest.digest();
+            return bytesToHex(hash);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    public static String generateSalt() {
+        Random random = new Random();
+        byte[] salt = new byte[16];
+        random.nextBytes(salt);
+        return bytesToHex(salt);
+    }
+    
+    private static String bytesToHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+    }
+}
+</code></pre>
+
+            <h2>5. Kết luận</h2>
+            <p>
+                Bảo mật không chỉ là lớp "bổ sung" mà phải được tích hợp ngay từ khi thiết kế ứng dụng. 
+                Một hệ thống mạng an toàn là sự kết hợp giữa:
+            </p>
+            <ul>
+                <li>✅ Mã hóa dữ liệu khi truyền</li>
+                <li>✅ Xác thực người dùng mạnh mẽ</li>
+                <li>✅ Phân quyền rõ ràng</li>
+                <li>✅ Validate input nghiêm ngặt</li>
+                <li>✅ Logging và monitoring</li>
+                <li>✅ Regular security updates</li>
+            </ul>
+            <p>
+                <b>Security is not a feature, it's a requirement.</b>
+            </p>
+        </section>
     </main>
 </body>
 </html>

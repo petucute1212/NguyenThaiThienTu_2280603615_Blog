@@ -1,81 +1,375 @@
-body {
-  font-family: "Segoe UI", sans-serif;
-  background: #f9fafb;
-  color: #222;
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 50%, #16213e 100%);
+  background-attachment: fixed;
+  color: #e8e8e8;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Zodiac constellation background */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(148, 140, 232, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(138, 43, 226, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 header {
-  background: #2c3e50;
+  background: linear-gradient(135deg, rgba(138, 43, 226, 0.3) 0%, rgba(106, 17, 203, 0.25) 100%);
+  backdrop-filter: blur(10px);
   color: #fff;
-  padding: 20px;
+  padding: 30px 20px;
   text-align: center;
+  border-bottom: 2px solid rgba(255, 215, 0, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 1;
+}
+
+header h1 {
+  font-size: 2.2em;
+  font-weight: 600;
+  text-shadow: 0 2px 8px rgba(148, 140, 232, 0.5);
+  margin-bottom: 15px;
+  letter-spacing: 1px;
+}
+
+header::after {
+  content: '♍';
+  display: block;
+  font-size: 1.5em;
+  margin-top: 8px;
+  color: #d4af37;
+}
+
+header nav {
+  margin-top: 15px;
 }
 
 header nav a {
-  color: #f1c40f;
+  color: #e8e8e8;
   text-decoration: none;
-  margin: 0 10px;
+  margin: 0 15px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  border: 1px solid transparent;
 }
 
 header nav a:hover {
-  text-decoration: underline;
+  background: rgba(148, 140, 232, 0.2);
+  border-color: rgba(255, 215, 0, 0.4);
+  text-decoration: none;
+  transform: translateY(-2px);
+}
+
+header nav a.active {
+  background: rgba(138, 43, 226, 0.3);
+  border-color: rgba(255, 215, 0, 0.6);
 }
 
 main {
   max-width: 900px;
-  margin: 30px auto;
+  margin: 40px auto;
   padding: 0 20px;
+  position: relative;
+  z-index: 1;
 }
 
 .post-card {
-  background: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 25px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  background: linear-gradient(135deg, rgba(30, 30, 60, 0.7) 0%, rgba(26, 26, 46, 0.7) 100%);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 30px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 0 1px rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(148, 140, 232, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.post-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #8a2be2 0%, #d4af37 50%, #8a2be2 100%);
+}
+
+.post-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 
+    0 12px 40px rgba(138, 43, 226, 0.3),
+    inset 0 0 1px rgba(255, 255, 255, 0.15);
+  border-color: rgba(148, 140, 232, 0.4);
 }
 
 .post-card h2 {
   margin-top: 0;
-  color: #2c3e50;
+  color: #e8e8e8;
+  font-size: 1.6em;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.post-card h2 a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.post-card h2 a:hover {
+  color: #d4af37;
 }
 
 .post-card .date {
-  color: #777;
-  font-size: 0.9em;
-  margin-bottom: 8px;
+  color: #b8b8b8;
+  font-size: 0.95em;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.post-card p {
+  color: #d0d0d0;
+  line-height: 1.7;
+  margin-bottom: 15px;
 }
 
 .post-card .read-more {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   margin-top: 10px;
-  color: #0078ff;
+  color: #d4af37;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(138, 43, 226, 0.1) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.3);
 }
 
 .post-card .read-more:hover {
-  text-decoration: underline;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(138, 43, 226, 0.2) 100%);
+  border-color: #d4af37;
+  transform: translateX(5px);
+  text-decoration: none;
 }
 
 footer {
-  background: #2c3e50;
+  background: linear-gradient(135deg, rgba(138, 43, 226, 0.3) 0%, rgba(106, 17, 203, 0.25) 100%);
+  backdrop-filter: blur(10px);
   color: #fff;
   text-align: center;
-  padding: 15px;
-  margin-top: 30px;
+  padding: 20px;
+  margin-top: 50px;
   font-size: 0.9em;
+  border-top: 2px solid rgba(255, 215, 0, 0.2);
+  position: relative;
+  z-index: 1;
+}
+
+footer p {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Post content styling - for wrapped sections */
+main section {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 40px 30px;
+  background: linear-gradient(135deg, rgba(30, 30, 60, 0.7) 0%, rgba(26, 26, 46, 0.7) 100%);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 0 1px rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(148, 140, 232, 0.2);
+  margin-top: 25px;
+  margin-bottom: 20px;
+}
+
+/* Keep date paragraph styling */
+main > p[style*="color: #d4af37"] {
+  max-width: 850px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* For posts without section wrapper */
+main > p,
+main > h2 {
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+main > section p,
+main section p {
+  color: #d0d0d0;
+  line-height: 1.8;
+  margin-bottom: 15px;
+  font-size: 1.05em;
+}
+
+main > h2,
+main section h2 {
+  color: #d4af37;
+  margin-top: 30px;
+  margin-bottom: 15px;
+  font-size: 1.8em;
+  border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+  padding-bottom: 10px;
+  max-width: 850px;
+}
+
+main section h3 {
+  color: #948ce8;
+  margin-top: 25px;
+  margin-bottom: 12px;
+  font-size: 1.3em;
+}
+
+main section ol {
+  color: #d0d0d0;
+  margin: 15px 0;
+  padding-left: 30px;
+  line-height: 1.8;
+}
+
+main section ol li {
+  margin-bottom: 8px;
+}
+
+main section code {
+  background: rgba(138, 43, 226, 0.2);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.95em;
+}
+
+main > p,
+main > ul,
+main section ul {
+  color: #d0d0d0;
+  margin: 15px 0;
+  padding-left: 25px;
+  line-height: 1.8;
+}
+
+main > ul {
+  max-width: 850px;
+  margin: 15px auto;
+}
+
+main section ul li,
+main > ul li {
+  margin-bottom: 8px;
+}
+
+main section b,
+main p b,
+main li b {
+  color: #d4af37;
+}
+
+main header h1 {
+  color: #fff;
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 8px rgba(148, 140, 232, 0.5);
 }
 
 pre {
-    background-color: #f5f5f5;
-    border-left: 4px solid #4caf50;
-    padding: 10px;
-    overflow-x: auto;
+  background: linear-gradient(135deg, rgba(20, 20, 40, 0.9) 0%, rgba(15, 15, 30, 0.9) 100%);
+  border-left: 4px solid #8a2be2;
+  padding: 20px;
+  overflow-x: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
+
 code {
-    font-family: Consolas, monospace;
-    color: #333;
+  font-family: 'Fira Code', 'Consolas', 'Courier New', monospace;
+  color: #c8a2c8;
+  font-size: 0.95em;
+}
+
+/* About page specific styles */
+.about-container {
+  background: linear-gradient(135deg, rgba(30, 30, 60, 0.7) 0%, rgba(26, 26, 46, 0.7) 100%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(148, 140, 232, 0.2);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.about-photo {
+  border: 3px solid #d4af37 !important;
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+}
+
+.about-info h2 {
+  color: #d4af37 !important;
+}
+
+.about-info p {
+  color: #d0d0d0 !important;
+}
+
+.highlight {
+  color: #d4af37 !important;
+  font-weight: bold;
+}
+
+.quote {
+  border-left: 4px solid #8a2be2 !important;
+  color: #c8a2c8 !important;
+  background: rgba(138, 43, 226, 0.1);
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #8a2be2 0%, #d4af37 100%);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #9b50c8 0%, #e8c450 100%);
 }

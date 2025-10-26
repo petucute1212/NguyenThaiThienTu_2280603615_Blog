@@ -8,57 +8,138 @@
 <body>
     <header>
         <h1>Hiểu rõ hơn về Socket và giao thức TCP/UDP trong Java</h1>
-        <nav><a href="../index.html">← Trở về trang chủ</a></nav>
+        <nav><a href="../index.html">⇠ Trở về trang chủ</a></nav>
     </header>
     <main>
-        <p><b>Ngày đăng:</b> 20/10/2025</p>
+        <p style="color: #d4af37; font-size: 1.1em; margin-bottom: 25px;"><b>📅 Ngày đăng:</b> 20/10/2025</p>
 
         <section>
-            <h2>1. Socket là gì?</h2>
+            <h2>1. Socket - Nền tảng của lập trình mạng</h2>
             <p>
                 <b>Socket</b> là giao diện phần mềm cho phép hai chương trình — thường là trên hai máy tính khác nhau — 
-                trao đổi dữ liệu qua mạng. Trong Java, socket đóng vai trò như “đường ống” kết nối giữa <b>Client</b> và <b>Server</b>.
+                trao đổi dữ liệu qua mạng. Trong Java, socket đóng vai trò như "đường ống" kết nối giữa <b>Client</b> và <b>Server</b>.
             </p>
+            
+            <h3>1.1. Cấu trúc của Socket</h3>
             <p>
-                Một socket được định danh bởi hai yếu tố:
-                <ul>
-                    <li>Địa chỉ IP của máy.</li>
-                    <li>Số hiệu cổng (Port number).</li>
-                </ul>
-                Ví dụ: <code>192.168.1.5:8080</code> là một socket hoàn chỉnh.
+                Một socket được định danh bởi hai yếu tố chính:
             </p>
+            <ul>
+                <li><b>Địa chỉ IP:</b> Định danh duy nhất của máy tính trên mạng (ví dụ: 192.168.1.5)</li>
+                <li><b>Port number (Số cổng):</b> Định danh dịch vụ cụ thể trên máy đó (ví dụ: 8080, 3306, 5432)</li>
+            </ul>
+            <p>
+                Ví dụ: <code>192.168.1.5:8080</code> nghĩa là kết nối đến máy có IP 192.168.1.5 ở port 8080.
+            </p>
+            
+            <h3>1.2. Các loại Socket trong Java</h3>
+            <p>Java cung cấp các loại socket sau:</p>
+            <ul>
+                <li><b>Stream Socket (Socket):</b> Dùng TCP, đảm bảo độ tin cậy, phù hợp cho dữ liệu quan trọng</li>
+                <li><b>Datagram Socket:</b> Dùng UDP, nhanh hơn nhưng không đảm bảo, phù hợp cho real-time</li>
+                <li><b>Server Socket:</b> Tạo server lắng nghe kết nối từ client</li>
+            </ul>
+            
+            <h3>1.3. Khái niệm Port</h3>
+            <p>
+                Port là số cổng từ 0 đến 65535, được phân thành:
+            </p>
+            <ul>
+                <li><b>Well-known ports (0-1023):</b> Dành cho dịch vụ hệ thống (HTTP: 80, HTTPS: 443, FTP: 21)</li>
+                <li><b>Registered ports (1024-49151):</b> Phải đăng ký với IANA (MySQL: 3306, PostgreSQL: 5432)</li>
+                <li><b>Dynamic/Private ports (49152-65535):</b> Dùng cho client tạm thời</li>
+            </ul>
         </section>
 
         <section>
-            <h2>2. Giao thức TCP và UDP</h2>
+            <h2>2. Giao thức TCP và UDP - So sánh chi tiết</h2>
             <p>
                 Hai giao thức phổ biến nhất mà socket Java hỗ trợ là <b>TCP</b> và <b>UDP</b>.  
-                Mỗi loại có đặc trưng và mục đích khác nhau:
+                Mỗi loại có đặc trưng và mục đích khác nhau. Việc hiểu rõ sự khác biệt giúp bạn chọn đúng giao thức cho từng ứng dụng.
             </p>
-            <table border="1" cellpadding="8" cellspacing="0">
-                <tr>
+            
+            <h3>2.1. TCP (Transmission Control Protocol)</h3>
+            <p>
+                TCP là giao thức <b>hướng kết nối</b> và <b>đáng tin cậy</b>. Trước khi truyền dữ liệu, TCP phải thiết lập kết nối 3-way handshake.
+            </p>
+            <p><b>Đặc điểm của TCP:</b></p>
+            <ul>
+                <li><b>Connection-oriented:</b> Phải thiết lập kết nối trước khi truyền dữ liệu</li>
+                <li><b>Reliable:</b> Đảm bảo dữ liệu đến đúng, đúng thứ tự, không bị mất</li>
+                <li><b>Flow control:</b> Điều chỉnh tốc độ truyền dữ liệu theo khả năng nhận của bên nhận</li>
+                <li><b>Congestion control:</b> Tránh tắc nghẽn mạng bằng cách giảm tốc độ khi phát hiện congestion</li>
+                <li><b>Full-duplex:</b> Có thể gửi và nhận đồng thời</li>
+                <li><b>Overhead lớn:</b> Nhiều header bytes và cơ chế kiểm tra làm tăng độ trễ</li>
+            </ul>
+            
+            <p><b>3-Way Handshake:</b></p>
+            <ol>
+                <li>Client gửi SYN (synchronize) đến server</li>
+                <li>Server phản hồi SYN-ACK (synchronize-acknowledge)</li>
+                <li>Client gửi ACK (acknowledge) xác nhận</li>
+            </ol>
+            
+            <h3>2.2. UDP (User Datagram Protocol)</h3>
+            <p>
+                UDP là giao thức <b>không hướng kết nối</b> và <b>nhanh hơn</b>. Nó gửi từng packet độc lập, không cần thiết lập kết nối.
+            </p>
+            <p><b>Đặc điểm của UDP:</b></p>
+            <ul>
+                <li><b>Connectionless:</b> Không cần thiết lập kết nối trước, gửi packet ngay</li>
+                <li><b>Unreliable:</b> Không đảm bảo packet đến đúng, có thể mất hoặc sai thứ tự</li>
+                <li><b>Fast:</b> Overhead nhỏ, độ trễ thấp</li>
+                <li><b>No flow control:</b> Gửi dữ liệu liên tục không quan tâm đến khả năng nhận</li>
+                <li><b>No congestion control:</b> Có thể gây tắc nghẽn mạng nếu gửi quá nhiều</li>
+                <li><b>Simple:</b> Header chỉ 8 bytes (so với 20-60 bytes của TCP)</li>
+            </ul>
+            
+            <h3>2.3. Bảng so sánh chi tiết</h3>
+            <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+                <tr style="background: rgba(148, 140, 232, 0.3);">
                     <th>Đặc điểm</th>
                     <th>TCP (Transmission Control Protocol)</th>
                     <th>UDP (User Datagram Protocol)</th>
                 </tr>
                 <tr>
-                    <td>Độ tin cậy</td>
+                    <td><b>Độ tin cậy</b></td>
                     <td>Cao – đảm bảo gói tin đến nơi, đúng thứ tự</td>
                     <td>Thấp – không đảm bảo gói tin đến</td>
                 </tr>
                 <tr>
-                    <td>Tốc độ</td>
+                    <td><b>Tốc độ</b></td>
                     <td>Chậm hơn do cần xác nhận, kiểm tra lỗi</td>
                     <td>Nhanh hơn do không có xác nhận</td>
                 </tr>
                 <tr>
-                    <td>Ứng dụng phù hợp</td>
-                    <td>Web, email, chat, truyền file</td>
-                    <td>Game online, video streaming, IoT</td>
+                    <td><b>Overhead</b></td>
+                    <td>20-60 bytes header</td>
+                    <td>8 bytes header</td>
+                </tr>
+                <tr>
+                    <td><b>Kết nối</b></td>
+                    <td>Connection-oriented (3-way handshake)</td>
+                    <td>Connectionless (gửi ngay)</td>
+                </tr>
+                <tr>
+                    <td><b>Flow Control</b></td>
+                    <td>Có - điều chỉnh tốc độ</td>
+                    <td>Không</td>
+                </tr>
+                <tr>
+                    <td><b>Error Recovery</b></td>
+                    <td>Có - retransmission</td>
+                    <td>Không</td>
+                </tr>
+                <tr>
+                    <td><b>Ứng dụng phù hợp</b></td>
+                    <td>Web (HTTP), email (SMTP), chat, FTP, SSH</td>
+                    <td>Game online, video streaming, VoIP, DNS</td>
                 </tr>
             </table>
+            
             <p>
-                Khi lập trình Java, bạn chọn giao thức tùy theo tính chất ứng dụng: cần tin cậy hay cần tốc độ.
+                <b>Khi nào dùng TCP:</b> Khi dữ liệu phải đảm bảo đến đúng và đúng thứ tự (chat, file transfer, web)<br>
+                <b>Khi nào dùng UDP:</b> Khi tốc độ quan trọng hơn độ tin cậy (game, streaming, real-time monitoring)
             </p>
         </section>
 

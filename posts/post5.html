@@ -8,29 +8,116 @@
 <body>
     <header>
         <h1>Xây dựng giao thức truyền file giữa Client và Server trong Java</h1>
-        <nav><a href="../index.html">← Trở về trang chủ</a></nav>
+        <nav><a href="../index.html">⇠ Trở về trang chủ</a></nav>
     </header>
 
     <main>
-        <p><b>Ngày đăng:</b> 23/10/2025</p>
+        <p style="color: #d4af37; font-size: 1.1em; margin-bottom: 25px;"><b>📅 Ngày đăng:</b> 23/10/2025</p>
 
         <section>
-            <h2>1. Giới thiệu</h2>
+            <h2>1. Giới thiệu về truyền file qua mạng</h2>
             <p>
                 Trong các hệ thống mạng, việc truyền tệp tin (file) là một chức năng quan trọng – 
-                từ FTP server cho đến hệ thống cloud như Google Drive.  
+                từ FTP server cho đến hệ thống cloud như Google Drive, Dropbox.  
                 Mục tiêu bài này là xây dựng một mô hình đơn giản: <b>client gửi file lên server</b> hoặc <b>server gửi file cho client</b> 
                 qua giao thức TCP.
             </p>
+            
+            <h3>1.1. Ứng dụng trong thực tế</h3>
+            <p>
+                Truyền file là cốt lõi của nhiều dịch vụ phổ biến:
+            </p>
+            <ul>
+                <li><b>FTP (File Transfer Protocol):</b> Chuyển file giữa client và server</li>
+                <li><b>Cloud Storage:</b> Upload/download file lên Google Drive, Dropbox</li>
+                <li><b>Email Attachments:</b> Gửi đính kèm qua SMTP</li>
+                <li><b>P2P File Sharing:</b> BitTorrent, eMule</li>
+                <li><b>Backup Systems:</b> Sao lưu dữ liệu qua mạng</li>
+                <li><b>Content Delivery:</b> CDN phục vụ file tĩnh</li>
+            </ul>
+            
+            <h3>1.2. Các hình thức truyền file</h3>
+            <ul>
+                <li><b>Upload (Client → Server):</b> Client gửi file lên server</li>
+                <li><b>Download (Server → Client):</b> Server gửi file xuống client</li>
+                <li><b>Bi-directional:</b> Có thể upload và download trong cùng ứng dụng</li>
+            </ul>
+            
+            <h3>1.3. Thách thức kỹ thuật</h3>
+            <p>
+                Khi truyền file qua mạng, ta cần xử lý:
+            </p>
+            <ul>
+                <li>Đọc file dưới dạng binary data (byte array)</li>
+                <li>Chia nhỏ file thành các chunk để tránh buffer overflow</li>
+                <li>Gửi metadata: tên file, kích thước, loại file</li>
+                <li>Xác nhận nhận được file thành công</li>
+                <li>Xử lý lỗi khi kết nối bị gián đoạn</li>
+                <li>Hiển thị tiến trình upload/download cho user</li>
+            </ul>
         </section>
 
         <section>
             <h2>2. Nguyên lý truyền file qua socket</h2>
+            <p>
+                Khác với truyền text, truyền file đòi hỏi xử lý dữ liệu nhị phân (binary data). 
+                Quy trình truyền file qua socket TCP diễn ra như sau:
+            </p>
+            
+            <h3>2.1. Quy trình truyền file</h3>
+            <ol>
+                <li><b>Bên gửi:</b> Đọc file từ disk vào bộ nhớ (FileInputStream)</li>
+                <li><b>Bên gửi:</b> Chuyển đổi thành byte array</li>
+                <li><b>Bên gửi:</b> Gửi metadata trước (tên file, kích thước)</li>
+                <li><b>Bên gửi:</b> Chia nhỏ và gửi từng chunk qua OutputStream</li>
+                <li><b>Bên nhận:</b> Nhận metadata để biết tên file, kích thước</li>
+                <li><b>Bên nhận:</b> Đọc byte từ InputStream</li>
+                <li><b>Bên nhận:</b> Ghi vào FileOutputStream để tạo file mới</li>
+                <li><b>Xác nhận:</b> Bên nhận gửi thông báo thành công</li>
+            </ol>
+            
+            <h3>2.2. Các lớp Java sử dụng</h3>
             <ul>
-                <li>File được đọc thành các khối dữ liệu nhị phân (byte).</li>
-                <li>Dữ liệu này được gửi qua luồng <code>OutputStream</code> của socket.</li>
-                <li>Bên nhận dùng <code>InputStream</code> để đọc lại các byte đó và ghi vào file mới.</li>
-                <li>Hai bên phải thống nhất trước: tên file, kích thước hoặc tín hiệu kết thúc.</li>
+                <li><b>FileInputStream / FileOutputStream:</b> Đọc/ghi file từ disk</li>
+                <li><b>DataInputStream / DataOutputStream:</b> Gửi/nhận các kiểu dữ liệu nguyên thủy (long, int, byte)</li>
+                <li><b>BufferedInputStream / BufferedOutputStream:</b> Tăng hiệu suất với buffer</li>
+                <li><b>Socket.getInputStream() / getOutputStream():</b> Luồng dữ liệu qua mạng</li>
+            </ul>
+            
+            <h3>2.3. Giao thức truyền file</h3>
+            <p>
+                Hai bên phải thống nhất thứ tự truyền file:
+            </p>
+            <ul>
+                <li><b>Metadata trước:</b> Gửi tên file, kích thước (byte)</li>
+                <li><b>File content sau:</b> Gửi nội dung file từng chunk</li>
+                <li><b>Tín hiệu kết thúc:</b> Khi đã gửi đủ số byte = kích thước file</li>
+            </ul>
+            
+            <h3>2.4. Chia nhỏ file (Chunking)</h3>
+            <p>
+                Vì buffer có giới hạn (thường 8KB - 64KB), ta cần chia file thành nhiều chunk:
+            </p>
+            <pre><code>
+// Ví dụ: Chia file 1MB thành chunks 4KB
+byte[] buffer = new byte[4096];  // 4KB
+int bytesRead;
+long totalBytesRead = 0;
+long fileSize = file.length();
+
+while (totalBytesRead < fileSize) {
+    bytesRead = inputStream.read(buffer);
+    outputStream.write(buffer, 0, bytesRead);
+    totalBytesRead += bytesRead;
+}
+</code></pre>
+            <p>
+                Lợi ích của chunking:
+            </p>
+            <ul>
+                <li>Tiết kiệm bộ nhớ (không cần load toàn bộ file vào RAM)</li>
+                <li>Xử lý file lớn (hàng GB) mà không bị OutOfMemoryError</li>
+                <li>Hiển thị tiến trình: biết được % hoàn thành</li>
             </ul>
         </section>
 

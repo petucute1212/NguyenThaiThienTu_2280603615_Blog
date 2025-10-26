@@ -8,22 +8,60 @@
 <body>
     <header>
         <h1>Xây dựng Server đa luồng (Multi-threaded Server) trong Java</h1>
-        <nav><a href="../index.html">← Trở về trang chủ</a></nav>
+        <nav><a href="../index.html">⇠ Trở về trang chủ</a></nav>
     </header>
     <main>
-        <p><b>Ngày đăng:</b> 21/10/2025</p>
+        <p style="color: #d4af37; font-size: 1.1em; margin-bottom: 25px;"><b>📅 Ngày đăng:</b> 21/10/2025</p>
 
         <section>
             <h2>1. Tại sao cần server đa luồng?</h2>
             <p>
                 Trong mô hình client-server thông thường, nếu server chỉ xử lý <b>một client tại một thời điểm</b>, 
-                các client khác sẽ phải chờ đến khi kết nối trước đó kết thúc. Điều này làm giảm hiệu suất nghiêm trọng.
+                các client khác sẽ phải chờ đến khi kết nối trước đó kết thúc. Điều này làm giảm hiệu suất nghiêm trọng và trải nghiệm người dùng.
             </p>
+            
+            <h3>1.1. Vấn đề với Single-threaded Server</h3>
+            <p>
+                Một server đơn luồng có những hạn chế sau:
+            </p>
+            <ul>
+                <li><b>Blocking:</b> Mỗi client phải chờ client trước đó kết thúc</li>
+                <li><b>Hiệu quả thấp:</b> Lãng phí tài nguyên CPU khi đang chờ I/O operations</li>
+                <li><b>Không mở rộng được:</b> Số lượng client đồng thời bị giới hạn</li>
+                <li><b>Poor user experience:</b> Response time chậm khi có nhiều người dùng</li>
+            </ul>
+            
+            <p><b>Ví dụ thực tế:</b></p>
+            <p>
+                Hãy tưởng tượng một web server chỉ xử lý một request tại một thời điểm. 
+                Khi User A đang tải trang web (có thể mất 2-3 giây), User B, C, D... 
+                phải chờ đến lượt mình. Trong thế giới hiện đại, điều này hoàn toàn không chấp nhận được!
+            </p>
+            
+            <h3>1.2. Giải pháp: Multi-threading</h3>
             <p>
                 Để giải quyết, ta cần <b>đa luồng (multi-threading)</b>: mỗi khi có một client kết nối mới, 
                 server sẽ tạo một thread riêng để phục vụ kết nối đó. 
                 Nhờ vậy, nhiều client có thể giao tiếp với server đồng thời mà không bị nghẽn.
             </p>
+            
+            <p><b>Ưu điểm của Multi-threaded Server:</b></p>
+            <ul>
+                <li><b>Concurrent handling:</b> Xử lý nhiều client đồng thời</li>
+                <li><b>Better resource utilization:</b> Tận dụng tối đa CPU và memory</li>
+                <li><b>Scalability:</b> Có thể mở rộng để phục vụ nhiều người dùng hơn</li>
+                <li><b>Non-blocking:</b> Một thread bận không ảnh hưởng đến thread khác</li>
+                <li><b>Improved response time:</b> Người dùng nhận phản hồi nhanh hơn</li>
+            </ul>
+            
+            <h3>1.3. Khi nào sử dụng Multi-threading?</h3>
+            <ul>
+                <li>Chat server với nhiều phòng chat</li>
+                <li>Web server cần xử lý nhiều request đồng thời</li>
+                <li>Game server multi-player</li>
+                <li>File server với nhiều client upload/download</li>
+                <li>API server cần response nhanh cho nhiều client</li>
+            </ul>
         </section>
 
         <section>

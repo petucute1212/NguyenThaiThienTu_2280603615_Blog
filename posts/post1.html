@@ -8,39 +8,95 @@
 <body>
     <header>
         <h1>Giới thiệu về lập trình mạng với Java</h1>
-        <nav><a href="../index.html">← Trở về trang chủ</a></nav>
+        <nav><a href="../index.html">⇠ Trở về trang chủ</a></nav>
     </header>
     <main>
-        <p><b>Ngày đăng:</b> 19/10/2025</p>
+        <p style="color: #d4af37; font-size: 1.1em; margin-bottom: 25px;"><b>📅 Ngày đăng:</b> 19/10/2025</p>
 
         <section>
-            <h2>1. Mở đầu</h2>
+            <h2>1. Mở đầu - Lập trình mạng trong thời đại kỹ thuật số</h2>
             <p>
                 Trong thời đại mà mọi hệ thống đều kết nối Internet, lập trình mạng trở thành kỹ năng quan trọng với mọi lập trình viên. 
-                Với Java, bạn có thể dễ dàng xây dựng các ứng dụng trao đổi dữ liệu qua mạng như hệ thống chat, game online, dịch vụ web hay công cụ chia sẻ tệp tin.
+                Từ ứng dụng chat, game online, dịch vụ web, đến hệ thống IoT và microservices — tất cả đều dựa trên nền tảng giao tiếp qua mạng.
             </p>
             <p>
-                Ưu điểm của Java nằm ở mô hình lập trình đa nền tảng và thư viện mạng mạnh mẽ có sẵn, giúp bạn tập trung vào logic mà không cần lo về chi tiết hệ điều hành.
+                Với Java, bạn có được một công cụ mạnh mẽ và linh hoạt để xây dựng các ứng dụng phân tán. 
+                Ngôn ngữ này được thiết kế đặc biệt cho môi trường mạng, với thư viện <code>java.net</code> và <code>java.io</code> 
+                cung cấp đầy đủ các class và method để xử lý socket, stream, và các giao thức mạng phổ biến.
             </p>
-        </section>
-
-        <section>
-            <h2>2. Lập trình mạng trong Java là gì?</h2>
             <p>
-                Lập trình mạng trong Java dựa trên khái niệm <b>Socket</b> — một điểm cuối (endpoint) của kết nối giữa hai máy. 
-                Khi một ứng dụng gửi dữ liệu đi, nó sẽ “mở” một socket để kết nối với socket của bên nhận. 
-                Java hỗ trợ cả giao thức TCP (đảm bảo dữ liệu toàn vẹn) và UDP (nhanh, không đảm bảo).
+                <b>Tại sao lại chọn Java?</b>
             </p>
             <ul>
-                <li><b>ServerSocket</b>: dùng để tạo máy chủ, lắng nghe yêu cầu kết nối từ client.</li>
-                <li><b>Socket</b>: dùng ở phía client để kết nối tới server.</li>
-                <li><b>InputStream / OutputStream</b>: luồng dữ liệu để đọc và ghi qua mạng.</li>
+                <li><b>Tính đa nền tảng:</b> Code một lần, chạy mọi nơi — từ Windows, Linux đến macOS.</li>
+                <li><b>Quản lý bộ nhớ tự động:</b> Garbage Collector giúp tập trung vào logic thay vì quản lý bộ nhớ.</li>
+                <li><b>Hỗ trợ đa luồng mạnh mẽ:</b> Thread pool và concurrency API giúp xây dựng server đa luồng dễ dàng.</li>
+                <li><b>Ecosystem phong phú:</b> Có nhiều framework và thư viện hỗ trợ như Spring Framework, Netty, Apache MINA.</li>
+                <li><b>An toàn và ổn định:</b> Java được sử dụng bởi các hệ thống lớn như banking, e-commerce.</li>
             </ul>
         </section>
 
         <section>
-            <h2>3. Ví dụ minh họa</h2>
-            <p>Dưới đây là ví dụ đơn giản về việc tạo server và client trong Java:</p>
+            <h2>2. Khái niệm cơ bản về Socket và Mô hình Client-Server</h2>
+            <p>
+                Lập trình mạng trong Java dựa trên khái niệm <b>Socket</b> — một điểm cuối (endpoint) của kết nối giữa hai máy tính qua mạng. 
+                Socket hoạt động như một "đường ống" kết nối, cho phép hai ứng dụng ở xa nhau trao đổi dữ liệu với nhau.
+            </p>
+            
+            <h3>2.1. Mô hình Client-Server</h3>
+            <p>
+                Mô hình Client-Server là kiến trúc cơ bản nhất trong lập trình mạng:
+            </p>
+            <ul>
+                <li><b>Server (Máy chủ):</b> Ứng dụng chạy liên tục, lắng nghe các yêu cầu kết nối từ client, xử lý và phản hồi.</li>
+                <li><b>Client (Máy khách):</b> Ứng dụng chủ động kết nối đến server, gửi yêu cầu và nhận phản hồi.</li>
+            </ul>
+            
+            <p><b>Quy trình hoạt động:</b></p>
+            <ol>
+                <li>Server khởi động và chờ ở một port cụ thể (ví dụ: port 8080).</li>
+                <li>Client gửi yêu cầu kết nối đến địa chỉ IP và port của server.</li>
+                <li>Server chấp nhận kết nối, tạo ra một socket mới để giao tiếp với client đó.</li>
+                <li>Hai bên trao đổi dữ liệu qua socket.</li>
+                <li>Kết thúc kết nối, đóng socket.</li>
+            </ol>
+
+            <h3>2.2. Các lớp quan trọng trong Java</h3>
+            <ul>
+                <li><b>ServerSocket:</b> Dùng ở phía server để tạo máy chủ, lắng nghe yêu cầu kết nối từ client. Một ServerSocket có thể chấp nhận nhiều kết nối.</li>
+                <li><b>Socket:</b> Đại diện cho một kết nối giữa client và server. Mỗi socket có InputStream và OutputStream riêng.</li>
+                <li><b>InputStream / OutputStream:</b> Luồng dữ liệu để đọc và ghi qua mạng. Dùng để truyền text, binary data, files, v.v.</li>
+                <li><b>BufferedReader / PrintWriter:</b> Wrapper classes giúp đọc/ghi text dễ dàng hơn.</li>
+                <li><b>DataInputStream / DataOutputStream:</b> Dùng để truyền các kiểu dữ liệu nguyên thủy (int, long, float) và dữ liệu nhị phân.</li>
+            </ul>
+
+            <h3>2.3. Giao thức TCP vs UDP</h3>
+            <p>Java hỗ trợ cả hai giao thức phổ biến:</p>
+            <ul>
+                <li><b>TCP (Transmission Control Protocol):</b> Hướng kết nối, đảm bảo dữ liệu đến đúng và đúng thứ tự. Phù hợp cho chat, email, file transfer.</li>
+                <li><b>UDP (User Datagram Protocol):</b> Không hướng kết nối, nhanh hơn nhưng không đảm bảo độ tin cậy. Phù hợp cho video streaming, game online, VoIP.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>3. Ví dụ thực hành đầu tiên</h2>
+            <p>
+                Bây giờ chúng ta sẽ xây dựng một ứng dụng đơn giản nhất: client gửi một tin nhắn, server nhận và phản hồi lại.
+                Đây là bước đầu tiên để hiểu cách hoạt động của socket trong Java.
+            </p>
+            
+            <h3>3.1. Server - Lắng nghe và xử lý kết nối</h3>
+            <p>
+                Server có nhiệm vụ:
+            </p>
+            <ul>
+                <li>Tạo ServerSocket và lắng nghe ở port 9999</li>
+                <li>Chờ client kết nối bằng phương thức <code>accept()</code></li>
+                <li>Nhận tin nhắn từ client qua InputStream</li>
+                <li>Gửi phản hồi về cho client qua OutputStream</li>
+                <li>Đóng kết nối sau khi xử lý xong</li>
+            </ul>
+
             <pre><code>
 // Server.java
 import java.io.*;
@@ -48,24 +104,53 @@ import java.net.*;
 
 public class Server {
     public static void main(String[] args) throws IOException {
+        // Tạo ServerSocket ở port 9999
         ServerSocket server = new ServerSocket(9999);
-        System.out.println("Server đang chạy...");
-        Socket socket = server.accept();
-
-        BufferedReader input = new BufferedReader(
-            new InputStreamReader(socket.getInputStream())
-        );
-        PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
-
-        String message = input.readLine();
-        System.out.println("Client gửi: " + message);
-        output.println("Server nhận được: " + message);
-
-        socket.close();
-        server.close();
+        System.out.println("Server đang chạy trên port 9999...");
+        
+        try {
+            // Chờ client kết nối (phương thức accept() sẽ block cho đến khi có kết nối)
+            Socket socket = server.accept();
+            System.out.println("Client đã kết nối từ: " + socket.getInetAddress());
+            
+            // Tạo BufferedReader để đọc dữ liệu từ client
+            BufferedReader input = new BufferedReader(
+                new InputStreamReader(socket.getInputStream())
+            );
+            
+            // Tạo PrintWriter để gửi dữ liệu đến client
+            // true nghĩa là auto-flush (tự động flush sau mỗi lần println)
+            PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
+            
+            // Đọc tin nhắn từ client
+            String message = input.readLine();
+            System.out.println("Client gửi: " + message);
+            
+            // Gửi phản hồi về cho client
+            output.println("Server nhận được: " + message);
+            System.out.println("Đã phản hồi lại client");
+            
+        } finally {
+            // Đóng socket và server
+            if (!server.isClosed()) {
+                server.close();
+                System.out.println("Server đã đóng.");
+            }
+        }
     }
 }
             </code></pre>
+
+            <h3>3.2. Client - Kết nối và giao tiếp</h3>
+            <p>
+                Client có nhiệm vụ:
+            </p>
+            <ul>
+                <li>Kết nối đến server ở địa chỉ localhost:9999</li>
+                <li>Cho phép người dùng nhập tin nhắn</li>
+                <li>Gửi tin nhắn lên server</li>
+                <li>Nhận và hiển thị phản hồi từ server</li>
+            </ul>
 
             <pre><code>
 // Client.java
@@ -74,35 +159,102 @@ import java.net.*;
 
 public class Client {
     public static void main(String[] args) throws IOException {
+        // Kết nối đến server ở localhost:9999
         Socket socket = new Socket("localhost", 9999);
-        BufferedReader input = new BufferedReader(
-            new InputStreamReader(System.in)
-        );
+        System.out.println("Đã kết nối đến server!");
+        
+        // Tạo BufferedReader để đọc input từ bàn phím
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        
+        // Tạo PrintWriter để gửi dữ liệu đến server
         PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
+        
+        // Tạo BufferedReader để đọc phản hồi từ server
         BufferedReader response = new BufferedReader(
             new InputStreamReader(socket.getInputStream())
         );
-
+        
+        // Nhập tin nhắn từ người dùng
         System.out.print("Nhập tin nhắn gửi đến server: ");
         String msg = input.readLine();
+        
+        // Gửi tin nhắn lên server
         output.println(msg);
-        System.out.println(response.readLine());
-
+        System.out.println("Đã gửi tin nhắn!");
+        
+        // Nhận và hiển thị phản hồi từ server
+        String serverResponse = response.readLine();
+        System.out.println(serverResponse);
+        
+        // Đóng kết nối
         socket.close();
+        System.out.println("Đã đóng kết nối với server.");
     }
 }
             </code></pre>
+
+            <h3>3.3. Cách chạy chương trình</h3>
+            <p>Để test ứng dụng này:</p>
+            <ol>
+                <li>Mở terminal/command prompt thứ nhất, biên dịch và chạy Server:
+                    <pre><code>javac Server.java
+java Server</code></pre>
+                </li>
+                <li>Mở terminal thứ hai, biên dịch và chạy Client:
+                    <pre><code>javac Client.java
+java Client</code></pre>
+                </li>
+                <li>Nhập tin nhắn bất kỳ trong cửa sổ Client và xem phản hồi từ Server.</li>
+            </ol>
+
             <p>
-                Khi chạy chương trình, server sẽ chờ client kết nối, nhận chuỗi dữ liệu, và phản hồi lại. 
-                Đây chính là nguyên lý nền tảng của mọi ứng dụng client-server.
+                <b>Kết quả mong đợi:</b><br>
+                Server sẽ hiển thị: "Client đã kết nối..." và "Client gửi: [tin nhắn]"<br>
+                Client sẽ nhận được phản hồi: "Server nhận được: [tin nhắn]"
             </p>
         </section>
 
         <section>
-            <h2>4. Kết luận</h2>
+            <h2>4. Tổng kết và kiến thức cần ghi nhớ</h2>
             <p>
-                Bài viết này giới thiệu những khái niệm nền tảng về lập trình mạng trong Java: socket, server, client và cơ chế truyền dữ liệu. 
-                Ở các bài tiếp theo, chúng ta sẽ đi sâu hơn vào <b>đa luồng trong server</b>, <b>giao tiếp nhiều client</b> và <b>xây dựng ứng dụng web thực tế</b>.
+                Qua bài viết này, bạn đã nắm được:
+            </p>
+            <ul>
+                <li>Lý do tại sao lập trình mạng quan trọng trong thời đại số</li>
+                <li>Ưu điểm của Java trong phát triển ứng dụng mạng</li>
+                <li>Khái niệm Socket và cách nó hoạt động</li>
+                <li>Mô hình Client-Server cơ bản</li>
+                <li>Các lớp quan trọng: ServerSocket, Socket, Stream</li>
+                <li>Sự khác biệt giữa TCP và UDP</li>
+                <li>Cách xây dựng một ứng dụng client-server đơn giản</li>
+            </ul>
+
+            <h3>4.1. Lưu ý quan trọng khi lập trình mạng</h3>
+            <ul>
+                <li><b>Luôn đóng socket:</b> Đóng socket sau khi sử dụng xong để tránh rò rỉ tài nguyên</li>
+                <li><b>Xử lý exception:</b> Luôn có try-catch để xử lý IOException và các lỗi kết nối</li>
+                <li><b>Sử dụng auto-flush:</b> Tham số <code>true</code> trong PrintWriter để đảm bảo dữ liệu được gửi ngay</li>
+                <li><b>Chọn port phù hợp:</b> Tránh dùng các port hệ thống (< 1024) và port phổ biến</li>
+                <li><b>Thread safety:</b> Khi làm việc với nhiều client, cần chú ý đến thread safety</li>
+            </ul>
+
+            <h3>4.2. Hướng phát triển tiếp theo</h3>
+            <p>
+                Bài viết tiếp theo sẽ mở rộng kiến thức của bạn:
+            </p>
+            <ol>
+                <li><b>TCP/IP Protocol:</b> Hiểu sâu về mô hình OSI, TCP/IP và cách các gói tin được truyền qua mạng</li>
+                <li><b>Multi-threaded Server:</b> Xây dựng server có thể phục vụ nhiều client đồng thời</li>
+                <li><b>Chat Application:</b> Tạo hệ thống chat đa người dùng thực tế</li>
+                <li><b>File Transfer:</b> Xây dựng ứng dụng truyền file qua mạng</li>
+                <li><b>Security:</b> Mã hóa và bảo mật dữ liệu</li>
+            </ol>
+
+            <p>
+                <b>Kết luận:</b><br>
+                Lập trình mạng là kỹ năng quan trọng trong thời đại Internet of Things (IoT), cloud computing, và microservices. 
+                Java cung cấp một nền tảng vững chắc và dễ học để bắt đầu hành trình này. 
+                Với những kiến thức nền tảng từ bài viết này, bạn đã có thể tự tin bước vào thế giới lập trình mạng.
             </p>
         </section>
     </main>

@@ -8,19 +8,59 @@
 <body>
     <header>
         <h1>Xây dựng Mini FTP Server trong Java</h1>
-        <nav><a href="../index.html">← Trở về trang chủ</a></nav>
+        <nav><a href="../index.html">⇠ Trở về trang chủ</a></nav>
     </header>
 
     <main>
-        <p><b>Ngày đăng:</b> 24/10/2025</p>
+        <p style="color: #d4af37; font-size: 1.1em; margin-bottom: 25px;"><b>📅 Ngày đăng:</b> 24/10/2025</p>
 
         <section>
-            <h2>1. Giới thiệu</h2>
+            <h2>1. Giới thiệu về FTP và Mini FTP Server</h2>
             <p>
                 FTP (File Transfer Protocol) là giao thức phổ biến để trao đổi file giữa client và server.  
                 Trong bài này, ta sẽ xây dựng một phiên bản thu nhỏ — gọi là <b>Mini FTP Server</b> — 
                 cho phép client gửi lệnh để tải lên, tải xuống hoặc xem danh sách file có trên server.
             </p>
+            
+            <h3>1.1. FTP - File Transfer Protocol</h3>
+            <p>
+                FTP được phát triển vào năm 1971 và vẫn là giao thức phổ biến cho việc chuyển file:
+            </p>
+            <ul>
+                <li><b>Standard FTP:</b> Dùng port 21 (command) và port 20 (data)</li>
+                <li><b>SFTP (SSH File Transfer Protocol):</b> An toàn hơn, dùng SSH</li>
+                <li><b>FTPS:</b> FTP over SSL/TLS</li>
+            </ul>
+            
+            <h3>1.2. Ứng dụng thực tế của FTP</h3>
+            <ul>
+                <li>Web hosting: Upload website files lên server</li>
+                <li>Share files trong nội bộ công ty</li>
+                <li>Backup tự động dữ liệu</li>
+                <li>Distribute software và updates</li>
+                <li>Media server chia sẻ ảnh, video</li>
+            </ul>
+            
+            <h3>1.3. Tính năng của Mini FTP Server</h3>
+            <p>
+                Phiên bản Mini FTP của chúng ta sẽ hỗ trợ:
+            </p>
+            <ul>
+                <li>✅ <b>LIST:</b> Liệt kê tất cả file trong thư mục server</li>
+                <li>✅ <b>GET &lt;filename&gt;:</b> Download file từ server về client</li>
+                <li>✅ <b>PUT &lt;filename&gt;:</b> Upload file từ client lên server</li>
+                <li>✅ <b>EXIT:</b> Đóng kết nối an toàn</li>
+            </ul>
+            
+            <p>
+                <b>Lưu ý:</b> Đây là phiên bản đơn giản, không hỗ trợ:
+            </p>
+            <ul>
+                <li>Authentication (username/password)</li>
+                <li>Multiple directories (chỉ 1 thư mục root)</li>
+                <li>Delete, rename, create directory</li>
+                <li>Progress indicator khi transfer</li>
+            </ul>
         </section>
 
         <section>

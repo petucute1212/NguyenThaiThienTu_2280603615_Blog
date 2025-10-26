@@ -8,21 +8,65 @@
 <body>
     <header>
         <h1>Triển khai và kiểm thử ứng dụng mạng trong Java</h1>
-        <nav><a href="../index.html">← Trở về trang chủ</a></nav>
+        <nav><a href="../index.html">⇠ Trở về trang chủ</a></nav>
     </header>
 
     <main>
-        <p><b>Ngày đăng:</b> 27/10/2025</p>
+        <section>
+        <p style="color: #d4af37; font-size: 1.1em; margin-bottom: 25px;"><b>📅 Ngày đăng:</b> 27/10/2025</p>
 
-        <h2>1. Mục tiêu</h2>
-        <p>Sau khi xây dựng thành công mô hình Client–Server, bước tiếp theo là triển khai, chạy thử và đánh giá hiệu quả hoạt động của hệ thống. Việc kiểm thử giúp phát hiện lỗi, tối ưu hiệu năng và đảm bảo ứng dụng vận hành ổn định trong môi trường mạng thật.</p>
+            <h2>1. Mục tiêu của Testing và Deployment</h2>
+            <p>
+                Sau khi xây dựng thành công mô hình Client–Server, bước tiếp theo là triển khai, chạy thử và đánh giá hiệu quả hoạt động của hệ thống. 
+                Việc kiểm thử giúp phát hiện lỗi, tối ưu hiệu năng và đảm bảo ứng dụng vận hành ổn định trong môi trường mạng thật.
+            </p>
+            
+            <h3>1.1. Tại sao Testing quan trọng?</h3>
+            <ul>
+                <li><b>Phát hiện bugs:</b> Tìm lỗi logic, xử lý exception chưa đúng</li>
+                <li><b>Đảm bảo chất lượng:</b> Code hoạt động đúng như mong đợi</li>
+                <li><b>Performance testing:</b> Kiểm tra khả năng xử lý nhiều client</li>
+                <li><b>Security testing:</b> Tìm lỗ hổng bảo mật</li>
+                <li><b>User acceptance:</b> Đảm bảo trải nghiệm người dùng tốt</li>
+            </ul>
+            
+            <h3>1.2. Các loại Testing cho Network Applications</h3>
+            <ul>
+                <li><b>Unit Testing:</b> Test từng method riêng lẻ (JUnit)</li>
+                <li><b>Integration Testing:</b> Test sự tương tác giữa các component</li>
+                <li><b>Network Testing:</b> Test kết nối, latency, bandwidth</li>
+                <li><b>Load Testing:</b> Test với nhiều client đồng thời</li>
+                <li><b>Stress Testing:</b> Test giới hạn của hệ thống</li>
+                <li><b>Security Testing:</b> Test lỗ hổng bảo mật</li>
+            </ul>
 
-        <h2>2. Chuẩn bị môi trường</h2>
-        <ul>
-            <li>Hệ điều hành: Windows hoặc Linux</li>
-            <li>Phần mềm: JDK 17+, Visual Studio Code hoặc IntelliJ IDEA</li>
-            <li>Mạng cục bộ LAN hoặc máy ảo (VMware, VirtualBox) để mô phỏng nhiều client</li>
-        </ul>
+            <h2>2. Chuẩn bị môi trường Testing</h2>
+            <h3>2.1. Yêu cầu Hardware</h3>
+            <ul>
+                <li><b>CPU:</b> Ít nhất 2 cores (4+ cores khuyến nghị)</li>
+                <li><b>RAM:</b> Tối thiểu 4GB (8GB+ khuyến nghị)</li>
+                <li><b>Storage:</b> Đủ cho JDK, IDE, và test files</li>
+                <li><b>Network:</b> Card mạng 1Gbps cho LAN testing</li>
+            </ul>
+            
+            <h3>2.2. Yêu cầu Software</h3>
+            <ul>
+                <li><b>JDK:</b> Java 17 hoặc cao hơn (Java 21 LTS khuyến nghị)</li>
+                <li><b>IDE:</b> IntelliJ IDEA, Eclipse, hoặc Visual Studio Code</li>
+                <li><b>Build Tool:</b> Maven hoặc Gradle (nếu làm project lớn)</li>
+                <li><b>Terminal:</b> Command Prompt, PowerShell, hoặc Bash</li>
+            </ul>
+            
+            <h3>2.3. Mạng Testing</h3>
+            <p>
+                Để test nhiều client trên các máy khác nhau:
+            </p>
+            <ul>
+                <li><b>LAN Testing:</b> Sử dụng mạng nội bộ (cùng WiFi hoặc cáp mạng)</li>
+                <li><b>Virtual Machines:</b> VMware, VirtualBox để tạo nhiều máy ảo</li>
+                <li><b>Cloud Testing:</b> AWS, Azure để test trên WAN</li>
+                <li><b>Container Testing:</b> Docker để tạo nhiều container instances</li>
+            </ul>
 
         <h2>3. Cấu hình mạng</h2>
         <p>Trước khi chạy thử, cần đảm bảo tất cả máy trong cùng mạng LAN có thể “ping” lẫn nhau.  
@@ -59,6 +103,7 @@ ping 192.168.1.10
         <h2>7. Kết luận</h2>
         <p>Qua quá trình triển khai và kiểm thử, ta thấy Java cung cấp một nền tảng mạnh mẽ để phát triển các ứng dụng mạng, từ mức socket thấp đến các framework web hiện đại.  
         Mô hình Client–Server cơ bản là nền móng cho việc phát triển dịch vụ phân tán, chat, FTP, hay API nội bộ trong doanh nghiệp.</p>
+        </section>
     </main>
 </body>
 </html>

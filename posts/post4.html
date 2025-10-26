@@ -8,19 +8,50 @@
 <body>
     <header>
         <h1>Xây dựng Chat Server nhiều người (Group Chat) trong Java</h1>
-        <nav><a href="../index.html">← Trở về trang chủ</a></nav>
+        <nav><a href="../index.html">⇠ Trở về trang chủ</a></nav>
     </header>
 
     <main>
-        <p><b>Ngày đăng:</b> 22/10/2025</p>
+        <p style="color: #d4af37; font-size: 1.1em; margin-bottom: 25px;"><b>📅 Ngày đăng:</b> 22/10/2025</p>
 
         <section>
-            <h2>1. Giới thiệu</h2>
+            <h2>1. Giới thiệu về Chat Server đa người dùng</h2>
             <p>
                 Trong các ứng dụng chat hiện đại, server không chỉ phản hồi từng client, 
-                mà phải truyền tải thông điệp tới tất cả những người đang tham gia cùng “phòng chat”.
-                Để làm được điều này, ta cần xây dựng một **server có khả năng broadcast (phát thông điệp đến mọi client đang kết nối)**.
+                mà phải truyền tải thông điệp tới tất cả những người đang tham gia cùng "phòng chat".
+                Để làm được điều này, ta cần xây dựng một <b>server có khả năng broadcast</b> — phát thông điệp đến mọi client đang kết nối.
             </p>
+            
+            <h3>1.1. Hệ thống Chat trong thực tế</h3>
+            <p>
+                Các hệ thống chat phổ biến như Slack, Discord, Telegram hay WhatsApp đều hoạt động dựa trên mô hình này:
+            </p>
+            <ul>
+                <li><b>Centralized Server:</b> Server trung tâm quản lý tất cả tin nhắn</li>
+                <li><b>Broadcast:</b> Khi một người gửi tin, server gửi cho tất cả người khác trong phòng</li>
+                <li><b>Real-time:</b> Tin nhắn hiển thị gần như ngay lập tức</li>
+                <li><b>User Management:</b> Quản lý người tham gia, rời khỏi chat</li>
+            </ul>
+            
+            <h3>1.2. Kiến trúc của hệ thống</h3>
+            <p>
+                Hệ thống chat của chúng ta sẽ gồm các thành phần:
+            </p>
+            <ul>
+                <li><b>Chat Server:</b> Điểm trung tâm, quản lý tất cả kết nối và tin nhắn</li>
+                <li><b>Client Handler:</b> Mỗi client có một handler riêng (thread riêng)</li>
+                <li><b>Client Pool:</b> Danh sách tất cả client đang online</li>
+                <li><b>Broadcast Mechanism:</b> Cơ chế phát tin nhắn đến tất cả client</li>
+            </ul>
+            
+            <h3>1.3. Các tính năng chính</h3>
+            <ul>
+                <li>✅ Nhiều người chat cùng lúc trong một phòng</li>
+                <li>✅ Hiển thị tên người gửi</li>
+                <li>✅ Thông báo ai đã tham gia/rời phòng</li>
+                <li>✅ Nhận tin nhắn từ bàn phím và gửi lên server</li>
+                <li>✅ Nhận tin nhắn từ server và hiển thị trên màn hình</li>
+            </ul>
         </section>
 
         <section>
