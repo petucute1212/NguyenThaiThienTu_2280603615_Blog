@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chứng chỉ - Blog Lập Trình Mạng</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .certs-hero {
+      max-width: 900px;
+      margin: 40px auto 0;
+      padding: 30px;
+      text-align: center;
+    }
+    .certs-grid {
+      max-width: 900px;
+      margin: 20px auto 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .cert-card {
+      background: linear-gradient(135deg, rgba(30, 30, 60, 0.7) 0%, rgba(26, 26, 46, 0.7) 100%);
+      backdrop-filter: blur(10px);
+      border-radius: 14px;
+      border: 1px solid rgba(148, 140, 232, 0.2);
+      padding: 20px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 0 1px rgba(255,255,255,0.1);
+    }
+    .cert-card h3 { color: #d4af37; margin: 10px 0 8px; }
+    .cert-card p { color: #d0d0d0; }
+    .cert-image {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border-radius: 10px;
+      background: #111 center/cover no-repeat;
+      background-image: url('img/Cisco.png');
+      border: 2px solid rgba(212, 175, 55, 0.3);
+      box-shadow: 0 0 18px rgba(212, 175, 55, 0.25);
+    }
+    .score {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: rgba(212, 175, 55, 0.12);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      color: #e8e8e8;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Chứng chỉ</h1>
+    <nav>
+      <a href="index.html">Trang chủ</a>
+      <a href="about.html">Giới thiệu</a>
+      <a href="certificates.html" class="active">Chứng chỉ</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="certs-hero">
+      <h2>Thành tích & Chứng chỉ đạt được</h2>
+      <p>Những chứng nhận thể hiện năng lực học tập và kỹ năng chuyên môn.</p>
+    </section>
+
+    <section>
+      <div class="certs-grid">
+        <div class="cert-card">
+          <div class="cert-image" aria-label="Ảnh chứng chỉ Cisco"></div>
+          <h3>Chứng chỉ Cisco</h3>
+          <p>Nền tảng về mạng máy tính và cơ sở hạ tầng.</p>
+        </div>
+
+        <div class="cert-card">
+          <h3>MOS: Microsoft Office Specialist</h3>
+          <p>Đã đạt MOS cho <b>Word</b> và <b>Excel</b>.</p>
+          <span class="score">TOEIC: 650</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 - Thiết kế bởi Nguyễn Thái Thiên Tứ</p>
+  </footer>
+</body>
+</html>
+
+
